@@ -166,13 +166,13 @@ MonoBehaviour:
       m_Bits: 4294967295
   maximumSamples:
     m_OverrideState: 1
-    m_Value: 512
+    m_Value: 256
   minimumDepth:
     m_OverrideState: 0
     m_Value: 1
   maximumDepth:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: 2
   maximumIntensity:
     m_OverrideState: 0
     m_Value: 10
