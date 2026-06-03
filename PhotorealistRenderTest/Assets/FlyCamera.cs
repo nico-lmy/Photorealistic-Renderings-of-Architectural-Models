@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Indispensable pour utiliser le nouveau système
+using UnityEngine.InputSystem;
 
 public class FlyCamera : MonoBehaviour
 {
