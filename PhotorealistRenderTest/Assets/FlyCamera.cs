@@ -5,12 +5,16 @@ public class FlyCamera : MonoBehaviour
 {
     public float speed = 10.0f;
     public float mouseSensitivity = 0.2f; 
-    private float rotationY = 0.0f;
-    private float rotationX = 0.0f;
+    private float rotationY;
+    private float rotationX;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Vector3 currentRotation = transform.localEulerAngles;
+        rotationY = currentRotation.y;
+        rotationX = currentRotation.x;
+        if (rotationX > 180) rotationX -= 360;
     }
 
     void Update()

@@ -760,7 +760,7 @@ MonoBehaviour:
   m_ShapeWidth: 0.5
   m_ShapeHeight: 0.5
   m_AspectRatio: 1
-  m_ShapeRadius: 0.1
+  m_ShapeRadius: 0.5
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
   m_CustomSpotLightShadowCone: 30
@@ -882,7 +882,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1e+9
+  m_Intensity: 1.5e+10
   m_Range: 50
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -931,7 +931,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0.1
+  m_ShadowRadius: 0.5
   m_ShadowAngle: 0
   m_LightUnit: 2
   m_LuxAtDistance: 1
@@ -1279,7 +1279,7 @@ Transform:
   m_GameObject: {fileID: 1772841420}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0005940991, y: 0.64912313, z: -0.012746985, w: 0.76057625}
-  m_LocalPosition: {x: -4.99, y: 3.91, z: -16.86}
+  m_LocalPosition: {x: -6.74, y: 3.94, z: -17.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
