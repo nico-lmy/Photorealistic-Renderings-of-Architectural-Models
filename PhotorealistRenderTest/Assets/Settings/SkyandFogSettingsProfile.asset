@@ -548,7 +548,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 2
   rayMiss:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 3
   adaptiveProbeVolumesLayerMask:
     m_OverrideState: 0
@@ -577,7 +577,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   lastBounceFallbackHierarchy:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 3
   ambientProbeDimmer:
     m_OverrideState: 0
@@ -592,7 +592,7 @@ MonoBehaviour:
     m_Value: 7
   m_RayLength:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 80
   m_ClampValue:
     m_OverrideState: 1
     m_Value: 100
@@ -604,10 +604,10 @@ MonoBehaviour:
     m_Value: 0
   sampleCount:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 6
   bounceCount:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   m_Denoise:
     m_OverrideState: 1
     m_Value: 1
