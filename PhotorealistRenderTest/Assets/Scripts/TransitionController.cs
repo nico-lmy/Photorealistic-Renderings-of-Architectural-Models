@@ -28,6 +28,11 @@ public class TransitionController : MonoBehaviour
     public bool isMoving = false; 
     private Coroutine activeTransition;
 
+    public float timeBeforeTransition = 0.3f;
+    private float stopTimer = 0f;
+    public float movementThreshold = 0.02f;
+    public float rotationThreshold = 0.05f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,7 +61,7 @@ public class TransitionController : MonoBehaviour
         float dist = Vector3.Distance(lastPosition, targetCamera.transform.position);
         float angle = Quaternion.Angle(lastRotation, targetCamera.transform.rotation);
 
-        if (dist > 0.01f || angle > 0.05f) 
+        if (dist > movementThreshold || angle > rotationThreshold) 
         {
             if (activeTransition != null)
             {
@@ -65,13 +70,20 @@ public class TransitionController : MonoBehaviour
                 ResetVisuals();  
             }
             isMoving = true;
+            stopTimer = 0f;
+            lastPosition = targetCamera.transform.position;
+            lastRotation = targetCamera.transform.rotation;
         } 
         else 
         {
             if (isMoving)
             {
-                activeTransition = StartCoroutine(TransitionCoroutine());
-                isMoving = false;
+                stopTimer += Time.deltaTime;
+                if (stopTimer >= timeBeforeTransition)
+                {
+                    activeTransition = StartCoroutine(TransitionCoroutine());
+                    isMoving = false;
+                }
             }
         } 
         lastPosition = targetCamera.transform.position;  
