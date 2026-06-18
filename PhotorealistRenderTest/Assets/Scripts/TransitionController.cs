@@ -85,9 +85,7 @@ public class TransitionController : MonoBehaviour
                     isMoving = false;
                 }
             }
-        } 
-        lastPosition = targetCamera.transform.position;  
-        lastRotation = targetCamera.transform.rotation;    
+        }   
     }
 
     private void ResetVisuals()
