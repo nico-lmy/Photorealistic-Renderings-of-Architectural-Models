@@ -35,9 +35,37 @@ public class PVGISManager : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    string rawJson = webRequest.downloadHandler.text;
+                    string cleanJson = rawJson.Replace("time(UTC)", "time")
+                                            .Replace("Gb(n)", "Gbn")
+                                            .Replace("Gd(h)", "Gdh");
+                    PVGISResponse data = JsonUtility.FromJson<PVGISResponse>(cleanJson);
+                    Debug.Log(pages[page] + ":\nReceived:\n" 
+                                            + "Time: " + data.outputs.tmy_hourly[0].time + "\n"
+                                            + "Direct irradiance: " + data.outputs.tmy_hourly[0].Gbn + "\n"
+                                            + "Diffuse irradiance: " + data.outputs.tmy_hourly[0].Gdh + "\n");
                     break;
             }
         }
     }
+}
+
+[System.Serializable]
+public class PVGISResponse
+{
+    public PVGISOutputs outputs;
+}
+
+[System.Serializable]
+public class PVGISOutputs
+{
+    public TMYData[] tmy_hourly; 
+}
+
+[System.Serializable]
+public class TMYData
+{
+    public string time;
+    public float Gbn;
+    public float Gdh;
 }
