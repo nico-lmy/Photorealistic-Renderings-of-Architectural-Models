@@ -3,6 +3,8 @@ using UnityEngine;
 public class SunController : MonoBehaviour
 {
     public PVGISManager pvgisManager;
+    public Light directionalLight; 
+    private string lastCalculatedTime = "";
     
     [Header("Geographic coordinates")]
     [Range(-90f, 90f)]
@@ -81,11 +83,17 @@ public class SunController : MonoBehaviour
         // On formate la date au format PVGIS 
         System.DateTime date = currentDate.AddHours(hour);
         string targetTime = date.ToString("MMdd:HH00");
-        if (pvgisManager != null)
+        if (targetTime != lastCalculatedTime && pvgisManager != null)
         {
             TMYData currentSolarData = pvgisManager.GetDataForTime(targetTime);
-            if (currentSolarData != null)
-                Debug.Log("Pour le " + targetTime + " -> Rayonnement direct : " + currentSolarData.Gbn + " W/m2");
+            if (currentSolarData != null) 
+            {
+                lastCalculatedTime = targetTime; 
+                float directRadiation = currentSolarData.Gbn; 
+                float luxIntensity = directRadiation* 120f; 
+                if (directionalLight != null) directionalLight.intensity = luxIntensity;
+                Debug.Log("Pour le " + targetTime + " -> Rayonnement direct : " + currentSolarData.Gbn + " W/m2 | Intensité : " + luxIntensity + " Lux");
+            }
         }
 
     }
