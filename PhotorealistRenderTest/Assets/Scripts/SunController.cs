@@ -15,9 +15,12 @@ public class SunController : MonoBehaviour
     public float timeZone = 1f; 
 
     [Header("Time settings")]
-    [Tooltip("Day of the year from 1 to 365")]
-    [Range(1f, 365f)]
-    public float day; 
+    [Tooltip("Month of the year (1-12)")]
+    [Range(1, 12)]
+    public int month = 3; 
+    [Tooltip("Day of the month (1-31)")]
+    [Range(1, 31)]
+    public int dayOfMonth = 1; 
     [Tooltip("Standard time (the time of the watch)")]
     [Range(0f, 24f)]
     public float hour; 
@@ -30,6 +33,13 @@ public class SunController : MonoBehaviour
     // Update is called once per frame
         void Update()
     {
+        // on sécurise le jour max pour un mois
+        int maxDaysInMonth = System.DateTime.DaysInMonth(2026, month);
+        dayOfMonth = Mathf.Clamp(dayOfMonth, 1, maxDaysInMonth);
+
+        // on prend précisément le n-ième jour de l'année
+        System.DateTime currentDate = new System.DateTime(2026, month, dayOfMonth);
+        float day = currentDate.DayOfYear; 
 
         // on corrige le temps
 
@@ -69,7 +79,7 @@ public class SunController : MonoBehaviour
         transform.rotation = Quaternion.Euler(sunAltitude, azimut, 0);
 
         // On formate la date au format PVGIS 
-        System.DateTime date = new System.DateTime(2026, 1, 1).AddDays(day - 1).AddHours(hour);
+        System.DateTime date = currentDate.AddHours(hour);
         string targetTime = date.ToString("MMdd:HH00");
         if (pvgisManager != null)
         {
