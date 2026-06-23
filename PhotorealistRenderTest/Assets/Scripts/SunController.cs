@@ -4,7 +4,6 @@ public class SunController : MonoBehaviour
 {
     public PVGISManager pvgisManager;
     public Light directionalLight; 
-    private string lastCalculatedTime = "";
     
     [Header("Geographic coordinates")]
     [Range(-90f, 90f)]
@@ -80,19 +79,25 @@ public class SunController : MonoBehaviour
         // on rotate la directional light (soleil) avec l'altitude et la position sur la boussole qu'on a calculé
         transform.rotation = Quaternion.Euler(sunAltitude, azimut, 0);
 
-        // On formate la date au format PVGIS 
-        System.DateTime date = currentDate.AddHours(hour);
-        string targetTime = date.ToString("MMdd:HH00");
-        if (targetTime != lastCalculatedTime && pvgisManager != null)
+        // On formate la date au format PVGIS et on fait une interpolation entre les heures (pour avoir une transition plus douce)
+        int hour1 = Mathf.FloorToInt(hour); 
+        float fraction = hour - hour1; 
+
+        System.DateTime date1 = currentDate.AddHours(hour1);
+        System.DateTime date2 = currentDate.AddHours(hour1 + 1);
+        string targetTime1 = date1.ToString("MMdd:HH00");
+        string targetTime2 = date2.ToString("MMdd:HH00");
+        if (pvgisManager != null)
         {
-            TMYData currentSolarData = pvgisManager.GetDataForTime(targetTime);
-            if (currentSolarData != null) 
+            TMYData solarData1 = pvgisManager.GetDataForTime(targetTime1);
+            TMYData solarData2 = pvgisManager.GetDataForTime(targetTime2);
+            if (solarData1 != null && solarData2 != null) 
             {
-                lastCalculatedTime = targetTime; 
-                float directRadiation = currentSolarData.Gbn; 
-                float luxIntensity = directRadiation* 120f; 
+                // on applique la radiance directe trouvée à l'intensité du soleil en interpolant pour les heures entre
+                float interpolatedRadiation = Mathf.Lerp(solarData1.Gbn, solarData2.Gbn, fraction); 
+                float luxIntensity = interpolatedRadiation* 120f; 
                 if (directionalLight != null) directionalLight.intensity = luxIntensity;
-                Debug.Log("Pour le " + targetTime + " -> Rayonnement direct : " + currentSolarData.Gbn + " W/m2 | Intensité : " + luxIntensity + " Lux");
+                Debug.Log("Pour le " + targetTime1 + " -> Rayonnement direct : " + solarData1.Gbn + " W/m2 | Intensité : " + luxIntensity + " Lux");
             }
         }
 
