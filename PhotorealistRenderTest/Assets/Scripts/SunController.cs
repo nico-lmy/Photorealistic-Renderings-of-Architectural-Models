@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SunController : MonoBehaviour
 {
+    public PVGISManager pvgisManager;
+    
     [Header("Geographic coordinates")]
     [Range(-90f, 90f)]
     public float latitude; 
@@ -19,6 +21,11 @@ public class SunController : MonoBehaviour
     [Tooltip("Standard time (the time of the watch)")]
     [Range(0f, 24f)]
     public float hour; 
+
+    void Start()
+    {
+        if (pvgisManager != null) pvgisManager.FetchData(latitude, longitude);
+    }
 
     // Update is called once per frame
         void Update()
@@ -60,6 +67,17 @@ public class SunController : MonoBehaviour
 
         // on rotate la directional light (soleil) avec l'altitude et la position sur la boussole qu'on a calculé
         transform.rotation = Quaternion.Euler(sunAltitude, azimut, 0);
+
+        // On formate la date au format PVGIS 
+        System.DateTime date = new System.DateTime(2026, 1, 1).AddDays(day - 1).AddHours(hour);
+        string targetTime = date.ToString("MMdd:HH00");
+        if (pvgisManager != null)
+        {
+            TMYData currentSolarData = pvgisManager.GetDataForTime(targetTime);
+            if (currentSolarData != null)
+                Debug.Log("Pour le " + targetTime + " -> Rayonnement direct : " + currentSolarData.Gbn + " W/m2");
+        }
+
     }
 
 }

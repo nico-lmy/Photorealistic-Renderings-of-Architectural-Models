@@ -4,13 +4,12 @@ using UnityEngine.Networking;
 
 public class PVGISManager : MonoBehaviour
 {
-    public float testLat = 48.85f; 
-    public float testLon = 2.35f; 
+    public PVGISResponse pvgisData;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void FetchData(float lat, float lon)
     {
-        StartCoroutine(GetPVGISData(testLat, testLon));         
+        Debug.Log("Downloading PVGIS Data for Lat: " + lat + " Lon: " + lon);
+        StartCoroutine(GetPVGISData(lat, lon));         
     }
 
     IEnumerator GetPVGISData(float lat, float lon)
@@ -39,14 +38,19 @@ public class PVGISManager : MonoBehaviour
                     string cleanJson = rawJson.Replace("time(UTC)", "time")
                                             .Replace("Gb(n)", "Gbn")
                                             .Replace("Gd(h)", "Gdh");
-                    PVGISResponse data = JsonUtility.FromJson<PVGISResponse>(cleanJson);
-                    Debug.Log(pages[page] + ":\nReceived:\n" 
-                                            + "Time: " + data.outputs.tmy_hourly[0].time + "\n"
-                                            + "Direct irradiance: " + data.outputs.tmy_hourly[0].Gbn + "\n"
-                                            + "Diffuse irradiance: " + data.outputs.tmy_hourly[0].Gdh + "\n");
+                    pvgisData = JsonUtility.FromJson<PVGISResponse>(cleanJson);
+                    Debug.Log(pages[page] + ":\nReceived all the data from TMY JSON table !\n");
                     break;
             }
         }
+    }
+
+    public TMYData GetDataForTime(string targetTime)
+    {
+        if (pvgisData == null || pvgisData.outputs == null) return null;
+        foreach (TMYData data in pvgisData.outputs.tmy_hourly)
+            if (data.time.EndsWith(targetTime)) return data;
+        return null;
     }
 }
 

@@ -1904,8 +1904,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3548e5c788fc134f95d20224774777c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SunController
-  latitude: -50
-  longitude: 0
+  pvgisManager: {fileID: 1739693969}
+  latitude: 43.3
+  longitude: 5.4
   timeZone: 1
   day: 60
   hour: 11
@@ -1918,7 +1919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1739693968}
-  - component: {fileID: 1739693967}
+  - component: {fileID: 1739693969}
   m_Layer: 0
   m_Name: PVGIS Manager
   m_TagString: Untagged
@@ -1926,20 +1927,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1739693967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739693966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 339fa898f135abc4fb1b2c5c049b4ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PVGISManager
-  testLat: 48.85
-  testLon: 2.35
 --- !u!4 &1739693968
 Transform:
   m_ObjectHideFlags: 0
@@ -1955,6 +1942,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1739693969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739693966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339fa898f135abc4fb1b2c5c049b4ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PVGISManager
+  pvgisData:
+    outputs:
+      tmy_hourly: []
 --- !u!1 &1772841420
 GameObject:
   m_ObjectHideFlags: 0
