@@ -107,7 +107,7 @@ public class SunController : MonoBehaviour
                     HDAdditionalLightData hdLight = directionalLight.GetComponent<HDAdditionalLightData>();
                     if (hdLight != null) 
                     {
-                        directionalLight.intensity = Mathf.Max(luxIntensity, 1000f);
+                        directionalLight.intensity = Mathf.Max(luxIntensity, 10000f);
                         hdLight.lightDimmer = luxIntensity / directionalLight.intensity;
                     }
                     
