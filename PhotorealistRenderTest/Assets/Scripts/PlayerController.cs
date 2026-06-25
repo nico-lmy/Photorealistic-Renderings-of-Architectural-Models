@@ -27,17 +27,22 @@ public class PlayerController : MonoBehaviour
     {
         if (Mouse.current == null || Keyboard.current == null) return;
 
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        var kb = Keyboard.current; var mouse = Mouse.current; 
+        if (kb.escapeKey.wasPressedThisFrame) Cursor.lockState = CursorLockMode.None;
+        if (mouse.leftButton.wasPressedThisFrame) Cursor.lockState = CursorLockMode.Locked;
 
-        rotationX -= mouseDelta.y * mouseSensitivity;
-        rotationX = Mathf.Clamp(rotationX, -90, 90);
-        cameraTransform.localRotation = Quaternion.Euler(rotationX, 0f, 0);
-        transform.Rotate(Vector3.up * mouseDelta.x * mouseSensitivity);
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+            rotationX -= mouseDelta.y * mouseSensitivity;
+            rotationX = Mathf.Clamp(rotationX, -90, 90);
+            cameraTransform.localRotation = Quaternion.Euler(rotationX, 0f, 0);
+            transform.Rotate(Vector3.up * mouseDelta.x * mouseSensitivity);
+        }
 
         float moveForward = 0f;
         float moveRight = 0f;
-
-        var kb = Keyboard.current;
 
         if (kb.wKey.isPressed || kb.upArrowKey.isPressed) moveForward += 1f;
         if (kb.sKey.isPressed || kb.downArrowKey.isPressed) moveForward -= 1f;
@@ -52,7 +57,5 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded && velocity.y < 0) velocity.y = -2f;
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
-        if (kb.escapeKey.wasPressedThisFrame) Cursor.lockState = CursorLockMode.None;
     }
 }

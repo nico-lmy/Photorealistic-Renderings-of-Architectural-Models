@@ -1648,7 +1648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   controller: {fileID: 1493643094}
   cameraTransform: {fileID: 1772841423}
-  speed: 1.2
+  speed: 1.8
   mouseSensitivity: 0.2
   gravity: -9.81
 --- !u!1 &1536978449
