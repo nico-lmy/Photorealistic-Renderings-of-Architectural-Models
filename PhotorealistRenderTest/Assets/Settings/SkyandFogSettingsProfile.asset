@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Value: 0
   skyIntensityMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 2
   exposure:
     m_OverrideState: 1
     m_Value: 0
@@ -36,13 +36,13 @@ MonoBehaviour:
     m_Value: 20000
   updateMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 2
   updatePeriod:
     m_OverrideState: 1
     m_Value: 0
   includeSunInBaking:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   type:
     m_OverrideState: 1
     m_Value: 2
@@ -762,7 +762,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 12
   compensation:
     m_OverrideState: 1
     m_Value: 0

@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class SunController : MonoBehaviour
 {
     public PVGISManager pvgisManager;
     public Light directionalLight; 
+    public Volume globalVolume;
+    private PhysicallyBasedSky physicallyBasedSky;
     
     [Header("Geographic coordinates")]
     [Range(-90f, 90f)]
@@ -29,6 +33,7 @@ public class SunController : MonoBehaviour
     void Start()
     {
         if (pvgisManager != null) pvgisManager.FetchData(latitude, longitude);
+        if (globalVolume != null && globalVolume.profile != null) globalVolume.profile.TryGet(out physicallyBasedSky);
     }
 
     // Update is called once per frame
@@ -94,10 +99,23 @@ public class SunController : MonoBehaviour
             if (solarData1 != null && solarData2 != null) 
             {
                 // on applique la radiance directe trouvée à l'intensité du soleil en interpolant pour les heures entre
-                float interpolatedRadiation = Mathf.Lerp(solarData1.Gbn, solarData2.Gbn, fraction); 
-                float luxIntensity = interpolatedRadiation* 120f; 
-                if (directionalLight != null) directionalLight.intensity = luxIntensity;
-                Debug.Log("Pour le " + targetTime1 + " -> Rayonnement direct : " + solarData1.Gbn + " W/m2 | Intensité : " + luxIntensity + " Lux");
+                float interpolatedDirect = Mathf.Lerp(solarData1.Gbn, solarData2.Gbn, fraction); 
+                float luxIntensity = interpolatedDirect * 120f; 
+                if (directionalLight != null) 
+                {
+                    // on met une intensité minimale du soleil pour ne pas avoir un ciel noir mais on compte l'impact du soleil sur les objets si l'intensité est nulle
+                    HDAdditionalLightData hdLight = directionalLight.GetComponent<HDAdditionalLightData>();
+                    if (hdLight != null) 
+                    {
+                        directionalLight.intensity = Mathf.Max(luxIntensity, 1000f);
+                        hdLight.lightDimmer = luxIntensity / directionalLight.intensity;
+                    }
+                    
+                }
+                // on applique la radiance diffuse trouvée à l'intensité du ciel
+                float interpolatedDiffuse = Mathf.Lerp(solarData1.Gdh, solarData2.Gdh, fraction);
+                if (physicallyBasedSky != null)  physicallyBasedSky.multiplier.value = interpolatedDiffuse / 100f; 
+                Debug.Log("Pour le " + targetTime1 + " -> Rayonnement direct : " + solarData1.Gbn + " W/m2 | Rayonnement diffus : " + solarData1.Gdh + " W/m2 | Intensité : " + luxIntensity + " Lux | Multiplicateur d'intensité pour le ciel : " + physicallyBasedSky.multiplier.value);
             }
         }
 
