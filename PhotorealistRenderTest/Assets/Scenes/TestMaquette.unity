@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 92478af8add466b4e9c0c12e94ca69cc, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 39ce35657c2184847a97be5ffcbc5f73, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -621,35 +621,35 @@ MonoBehaviour:
     m_CaptureRotation: {x: 0, y: 0, z: 0, w: 0}
     m_FieldOfView: 0
     m_Aspect: 0
-  m_HasValidSHForNormalization: 0
+  m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 0
-    'sh[ 1]': 0
-    'sh[ 2]': 0
-    'sh[ 3]': 0
-    'sh[ 4]': 0
-    'sh[ 5]': 0
-    'sh[ 6]': 0
-    'sh[ 7]': 0
-    'sh[ 8]': 0
-    'sh[ 9]': 0
-    'sh[10]': 0
-    'sh[11]': 0
-    'sh[12]': 0
-    'sh[13]': 0
-    'sh[14]': 0
-    'sh[15]': 0
-    'sh[16]': 0
-    'sh[17]': 0
-    'sh[18]': 0
-    'sh[19]': 0
-    'sh[20]': 0
-    'sh[21]': 0
-    'sh[22]': 0
-    'sh[23]': 0
-    'sh[24]': 0
-    'sh[25]': 0
-    'sh[26]': 0
+    'sh[ 0]': 114965.55
+    'sh[ 1]': -9563.814
+    'sh[ 2]': -30522.703
+    'sh[ 3]': 78888.15
+    'sh[ 4]': -3978.8496
+    'sh[ 5]': -905.16864
+    'sh[ 6]': -1535.5359
+    'sh[ 7]': -8327.12
+    'sh[ 8]': 6202.246
+    'sh[ 9]': 104561.64
+    'sh[10]': -9962.788
+    'sh[11]': -30093.441
+    'sh[12]': 74506.52
+    'sh[13]': -3809.3354
+    'sh[14]': -1186.6527
+    'sh[15]': -1568.3591
+    'sh[16]': -8103.65
+    'sh[17]': 5776.749
+    'sh[18]': 108108
+    'sh[19]': -11017.061
+    'sh[20]': -33738.516
+    'sh[21]': 77635.48
+    'sh[22]': -4023.532
+    'sh[23]': -1448.9994
+    'sh[24]': -1603.8009
+    'sh[25]': -8551.292
+    'sh[26]': 5957.6963
   m_SHValidForCapturePosition: {x: 1.2604008, y: 1.6202911, z: -0.20125008}
   m_SHValidForSourcePosition: {x: 1.2604008, y: 1.6202911, z: -0.20125008}
   m_HDProbeVersion: 9
@@ -1020,7 +1020,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 7151
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 2.451e-42, y: 2.524355e-29, z: 0, w: 1.0396158e+21}
+  m_BoundingSphereOverride: {x: 9.1835e-41, y: 2.0387484e-38, z: 4.5697343e-37, w: 4.1326e-40}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1083,7 +1083,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 7
   overridesSubdivLevels: 0
-  mightNeedRebaking: 1
+  mightNeedRebaking: 0
   cachedTransform:
     e00: 1
     e01: 0
@@ -1336,7 +1336,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 2.221e-41, y: 2.524355e-29, z: 0, w: 6.573344e+28}
+  m_BoundingSphereOverride: {x: 3.673418e-39, y: -9.1835e-41, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1673,7 +1673,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 3.374e-42, y: 2.524355e-29, z: 0, w: 9e-44}
+  m_BoundingSphereOverride: {x: 2.3509887e-38, y: 0.0000000018774813, z: 0.0000000037252903, w: -Infinity}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1802,7 +1802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83d2f7ae04ab6f4f99b0d85377be998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolumePerSceneData
-  serializedBakingSet: {fileID: 0}
+  serializedBakingSet: {fileID: 11400000, guid: 50092585f99c40749a3cc7f1ebfb2f86, type: 2}
   sceneGUID: 14f4d14adcfd5c640abbca8b33af6b6b
   obsoleteAsset: {fileID: 0}
   obsoleteCellSharedDataAsset: {fileID: 0}
@@ -1898,7 +1898,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 1.1003e-41, y: 2.524355e-29, z: 0, w: 4.2292133e+21}
+  m_BoundingSphereOverride: {x: 1.1626349e+27, y: 9.70517e+24, z: 2.895513e+23, w: 1.9204597e+31}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
