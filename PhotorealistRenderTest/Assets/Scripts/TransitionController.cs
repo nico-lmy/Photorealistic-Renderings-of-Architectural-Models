@@ -11,24 +11,26 @@ public class TransitionController : MonoBehaviour
     private Quaternion lastRotation;
     private Exposure exposureComponent;
     private DepthOfField dofComponent;
+    private PathTracing pathTracingComponent;
 
     [Header("Settings - Transition")]
-    public float fadeDuration = 0.15f;
-    public float holdDuration = 0.1f;
+    public float fadeDuration = 0.3f;
+    public float holdDuration = 0.2f;
 
     [Header("Settings - Exposure")]
-    public float darkExposure = -1.5f; 
+    public float darkExposure = -5f; 
     private float defaultExposure;
 
     [Header("Settings - Blur (Depth of Field)")]
-    public float blurFocusDistance = 0.1f; 
+    public float blurFocusDistance = 0.2f; 
     private float defaultFocusDistance = 10f; 
     
     [Header("State")]
     public bool isMoving = false; 
     private Coroutine activeTransition;
 
-    public float timeBeforeTransition = 0.3f;
+    [Header("Detection Settings")]
+    public float timeBeforeTransition = 0.5f;
     private float stopTimer = 0f;
     public float movementThreshold = 0.02f;
     public float rotationThreshold = 0.05f;
@@ -36,21 +38,30 @@ public class TransitionController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        lastPosition = targetCamera.transform.position; 
-        lastRotation = targetCamera.transform.rotation;
+        if (targetCamera == null && Camera.main != null) targetCamera = Camera.main;
 
-        if (volume.profile.TryGet<Exposure>(out var exposure)) 
+        if (targetCamera != null) 
         {
-            exposureComponent = exposure;
-            defaultExposure = exposureComponent.compensation.value;  
+            lastPosition = targetCamera.transform.position; 
+            lastRotation = targetCamera.transform.rotation;
         }
 
-        if (volume.profile.TryGet<DepthOfField>(out var dof))
+        if (volume != null) 
         {
-            dofComponent = dof;
-            defaultFocusDistance = dofComponent.focusDistance.value; 
-        }
-        
+            if (volume.profile.TryGet<Exposure>(out var exposure)) 
+            {
+                exposureComponent = exposure;
+                defaultExposure = exposureComponent.compensation.value;  
+            }
+
+            if (volume.profile.TryGet<DepthOfField>(out var dof))
+            {
+                dofComponent = dof;
+                defaultFocusDistance = dofComponent.focusDistance.value; 
+            }
+
+            if (volume.profile.TryGet<PathTracing>(out var pt)) pathTracingComponent = pt;
+        }        
     }
 
     // Update is called once per frame
@@ -71,6 +82,7 @@ public class TransitionController : MonoBehaviour
             }
             isMoving = true;
             stopTimer = 0f;
+            if (pathTracingComponent != null && pathTracingComponent.enable.value) pathTracingComponent.enable.value = false;
             lastPosition = targetCamera.transform.position;
             lastRotation = targetCamera.transform.rotation;
         } 
@@ -112,6 +124,7 @@ public class TransitionController : MonoBehaviour
         }
         if (exposureComponent != null) exposureComponent.compensation.value = darkExposure;
         if (dofComponent != null) dofComponent.focusDistance.value = blurFocusDistance;
+        if (pathTracingComponent != null) pathTracingComponent.enable.value = true;
         yield return new WaitForSeconds(holdDuration);
 
         elapsed = 0f;

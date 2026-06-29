@@ -2145,7 +2145,6 @@ GameObject:
   - component: {fileID: 1772841421}
   - component: {fileID: 1772841424}
   - component: {fileID: 1772841425}
-  - component: {fileID: 1772841426}
   - component: {fileID: 1772841427}
   m_Layer: 0
   m_Name: Main Camera
@@ -2381,23 +2380,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyCamera
   speed: 6
   mouseSensitivity: 0.6
---- !u!114 &1772841426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772841420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254c06d27a4c9854d93ae3a8f873c44e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DynamicPathTracing
-  globalVolume: {fileID: 349655183}
-  cameraTransform: {fileID: 1772841423}
-  stopDelay: 0.6
-  movementThreshold: 0.005
-  rotationThreshold: 0.05
 --- !u!114 &1772841427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2412,12 +2394,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TransitionController
   volume: {fileID: 349655183}
   targetCamera: {fileID: 1772841422}
-  fadeDuration: 0.3
+  fadeDuration: 0.5
   holdDuration: 0.2
-  darkExposure: -4
+  darkExposure: -80
   blurFocusDistance: 0.2
   isMoving: 0
-  timeBeforeTransition: 0.3
+  timeBeforeTransition: 0.5
   movementThreshold: 0.02
   rotationThreshold: 0.05
 --- !u!1 &1957771732
