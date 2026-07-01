@@ -1,0 +1,18 @@
+{
+    "name": "Stereolab.Editor",
+    "rootNamespace": "Stereolab.Editor",
+    "references": [
+        "GUID:dc624fe1e81850540a02f6e1bd31ce24"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

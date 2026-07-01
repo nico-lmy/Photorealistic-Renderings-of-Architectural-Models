@@ -1,0 +1,146 @@
+{
+    "name": "WorkbenchConfig",
+    "maps": [
+        {
+            "name": "WorkbenchTrackedBodies",
+            "id": "8d34dbfe-00cc-4457-b7e6-a2af7c80c21f",
+            "actions": [
+                {
+                    "name": "LeftHandPosition",
+                    "type": "Value",
+                    "id": "d2ee2539-2581-4b9c-879e-0eb4357270fa",
+                    "expectedControlType": "Vector3",
+                    "processors": "InvertVector3(invertX=false,invertY=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftHandRotation",
+                    "type": "Value",
+                    "id": "0ee03eb8-d006-4ab9-a489-ca9b4fdee061",
+                    "expectedControlType": "Quaternion",
+                    "processors": "InvertQuaternionRotationInput(invertZ=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HeadPosition",
+                    "type": "Value",
+                    "id": "4e150af1-b451-4d6c-ae8d-d33e9e197570",
+                    "expectedControlType": "Vector3",
+                    "processors": "InvertVector3(invertX=false,invertY=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HeadRotation",
+                    "type": "Value",
+                    "id": "04ce6cf2-c12a-43aa-a366-46230f4a0cc6",
+                    "expectedControlType": "Quaternion",
+                    "processors": "InvertQuaternionRotationInput(invertZ=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RightHandPosition",
+                    "type": "Value",
+                    "id": "dea6f4a0-72d1-48ce-8035-2a8625082403",
+                    "expectedControlType": "Vector3",
+                    "processors": "InvertVector3(invertX=false,invertY=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RightHandRotation",
+                    "type": "Value",
+                    "id": "b91330da-765b-4f65-a0a5-70fb327967cc",
+                    "expectedControlType": "Quaternion",
+                    "processors": "InvertQuaternionRotationInput(invertZ=false)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6c625a34-d8ae-4229-adf1-bf0fb6efd98a",
+                    "path": "LeftHandTracker/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "LeftHandRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "759e4f5e-c7e9-45b3-8666-a935bfe3820e",
+                    "path": "HeadTracker/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "HeadRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b81e30c-69e1-4a57-a724-8b3156568d95",
+                    "path": "LeftHandTracker/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "LeftHandPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3a70caf-801d-40dd-a133-e116f8b02079",
+                    "path": "HeadTracker/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "HeadPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "485cfe08-e9d0-478a-9653-c82790bae0db",
+                    "path": "RightHandTracker/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "RightHandPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c31c6e1-db5d-4ed8-a5c8-4f79cc2cc74d",
+                    "path": "RightHandTracker/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Workbench",
+                    "action": "RightHandRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Workbench",
+            "bindingGroup": "Workbench",
+            "devices": [
+                {
+                    "devicePath": "<VrpnTracker>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "name": "Vrpn.Input.Editor",
+    "rootNamespace": "Vrpn.Input.Editor",
+    "references": [
+        "GUID:57ddec49d8ff28e4eac202010f0f42e8"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

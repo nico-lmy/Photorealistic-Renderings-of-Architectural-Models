@@ -1,0 +1,23 @@
+{
+  "name": "fr.icube.gaia.stereolab",
+  "version": "1.0.0",
+  "displayName": "Stereolab",
+  "description": "Toolkit for CAVE-using applications",
+  "unity": "2022.3",
+  "dependencies": {
+    "fr.inria.vrpn.input": "1.0.4"
+  },
+  "samples": [
+    {
+      "displayName": "Workbench Setup",
+      "description": "Sample setup for the ICube Workbench",
+      "path": "Samples~/Workbench"
+    }
+  ],
+  "author": {
+    "name": "Thomas Duhamel",
+    "email": "thomas.duhamel@protonmail.com"
+  },
+  "documentationUrl": "https://forge.icube.unistra.fr/invirtuo/stereolab/-/wikis/Documentation",
+  "_fingerprint": "06104494459007fb6d57732448e19accf37efb90"
+}

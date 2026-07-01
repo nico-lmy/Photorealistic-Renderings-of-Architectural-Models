@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce864309309973647a5dac46b91bd2f1, type: 3}
+  m_Name: PrefabManager
+  m_EditorClassIdentifier: 
+  StereolabInstance: {fileID: 4584716356444136080, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+  StereoProjection:
+    ProjectionPlane: {fileID: 8207843131839250681, guid: d5f4de2aa44af09438709d40eb3b58f4, type: 3}
+    ProjectionPlaneCamera: {fileID: 753298307258763796, guid: fc0a8f986493e4f4f97f0398c0f370ab, type: 3}

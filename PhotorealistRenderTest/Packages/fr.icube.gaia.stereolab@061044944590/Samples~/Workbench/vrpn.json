@@ -1,0 +1,29 @@
+{
+    "inputs": [
+        {
+            "InputName": "LeftHandTracker",
+            "VrpnDeviceName": "DTrack",
+            "VrpnServerUrl": "127.0.0.1",
+            "Index": 0,
+            "InputType": 2
+        },
+        {
+            "InputName": "RightHandTracker",
+            "VrpnDeviceName": "DTrack",
+            "VrpnServerUrl": "127.0.0.1",
+            "Index": 1,
+            "InputType": 2
+        },
+        {
+            "InputName": "HeadTracker",
+            "VrpnDeviceName": "DTrack",
+            "VrpnServerUrl": "127.0.0.1",
+            "Index": 2,
+            "InputType": 2
+        }
+    ],
+    "dpads": [],
+    "sticks": [],
+    "xrControllers": [],
+    "xrHMDs": []
+}

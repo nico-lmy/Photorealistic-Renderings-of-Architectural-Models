@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; flex-grow: 1;">
+        <ui:Label name="top-label" text="VRPN Input Settings" class="title" />
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+            <uie:PropertyField binding-path="inputs" name="Inputs" focusable="false" label="Inputs" />
+            <uie:PropertyField binding-path="dpads" name="Dpads" focusable="false" label="Dpads" />
+            <uie:PropertyField binding-path="sticks" name="Sticks" focusable="false" label="Sticks" />
+            <uie:PropertyField binding-path="xrControllers" name="XRControllers" focusable="false" label="XRControllers" />
+            <uie:PropertyField binding-path="xrHMDs" name="XRHMDs" focusable="false" label="XRHMDs" style="flex-grow: 0;" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+    <ui:Button text="Export To Json" display-tooltip-when-elided="true" name="Export" />
+    <ui:Button text="Load From Json" display-tooltip-when-elided="true" name="Load" />
+</ui:UXML>

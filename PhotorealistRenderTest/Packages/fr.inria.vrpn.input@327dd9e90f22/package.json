@@ -1,0 +1,17 @@
+{
+  "name": "fr.inria.vrpn.input",
+  "displayName": "VRPN Input",
+  "version": "1.0.4",
+  "unity": "2021.3",
+  "description": "VRPN integration for Unity Input System",
+  "dependencies": {
+    "com.unity.inputsystem": "1.1.1"
+  },
+  "keywords": [
+    "vr",
+    "xr",
+    "reality",
+    "xreditorsubsystem"
+  ],
+  "_fingerprint": "327dd9e90f2266d8c5546f4e107856eb274810f3"
+}

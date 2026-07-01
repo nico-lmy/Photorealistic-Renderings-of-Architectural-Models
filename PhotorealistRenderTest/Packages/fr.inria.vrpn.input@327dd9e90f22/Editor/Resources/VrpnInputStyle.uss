@@ -1,0 +1,35 @@
+.buttons-container {
+ /* Populates the elements in this container horizontally. */
+    flex-direction: row;
+}
+
+.button-right { 
+    align-self: flex-end;
+}
+
+.container {
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+
+.wand-container {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+
+.list-container {
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+
+.title{
+    font-size: 18px;
+    -unity-font-style: bold;
+}
