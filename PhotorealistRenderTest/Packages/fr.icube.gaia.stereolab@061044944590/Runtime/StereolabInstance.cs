@@ -26,6 +26,18 @@ namespace Stereolab.StereoProjection
         /// </summary>
         public static bool renderLeftEye { get; private set; } = true;
 
+        // Nicolas LAMY - July 2026 - Non-destructive addition (autoFlip=true by default -> behavior remains unchanged) to suspend stereo flipping while the path tracer is accumulating data
+        
+        /// <summary>
+        /// Allows to pause automatic switching during image accumulation.
+        /// </summary>
+        public static bool autoFlip = true;
+
+        // Explicitly forces the rendered eye (used during accumulation)
+        public static void ForceEye(bool left) { renderLeftEye = left; }
+
+        // Nicolas LAMY - July 2026 - End of the modifications
+
         private void Awake()
         {
             // StereolabInstance represents one stereoscopic 3D rig, so only one should exist in the scene
@@ -48,7 +60,10 @@ namespace Stereolab.StereoProjection
         private void Update()
         {
             // Flip the eye rendered at each frame.
-            renderLeftEye = !renderLeftEye;
+            // Nicolas LAMY - July 2026 - Non-destructive addition (autoFlip=true by default -> behavior remains unchanged) to suspend stereo flipping while the path tracer is accumulating data
+            if (autoFlip) 
+            // Nicolas LAMY - July 2026 - End of the modifications
+                renderLeftEye = !renderLeftEye;
 
             // Allow to swap eye frames manually in case of a frame drop
             // TODO: Find a way to avoid this problem and apply the inversion automatically
