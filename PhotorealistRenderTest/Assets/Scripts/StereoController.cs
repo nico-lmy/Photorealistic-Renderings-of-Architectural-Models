@@ -14,7 +14,7 @@ public class StereoController : MonoBehaviour
     public int maxSamples = 64;
     public int safetyMargin = 8;
 
-    [Header("Detection (repos)")]
+    [Header("Detection")]
     public Transform trackedTransform;
     public float movementThreshold = 0.02f;
     public float rotationThreshold = 0.05f;
@@ -23,8 +23,11 @@ public class StereoController : MonoBehaviour
     private PathTracing pathTracing;
     private RenderTexture[] leftRT = new RenderTexture[3];
     private RenderTexture[] rightRT = new RenderTexture[3];
+    private RenderTexture[] leftRTGI = new RenderTexture[3];
+    private RenderTexture[] rightRTGI = new RenderTexture[3];
     private bool frozen = false;
     private bool capturing = false;
+    private bool useFinalPT = false;
     private Vector3 lastPos;
     private Quaternion lastRot;
     private float stopTimer = 0f;
@@ -46,8 +49,12 @@ public class StereoController : MonoBehaviour
             int h = Screen.height;
             leftRT[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             rightRT[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
+            leftRTGI[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
+            rightRTGI[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             leftRT[i].Create();
             rightRT[i].Create();
+            leftRTGI[i].Create();
+            rightRTGI[i].Create();
         }
 
     }
@@ -81,9 +88,21 @@ public class StereoController : MonoBehaviour
     IEnumerator CaptureRoutine()
     {
         capturing = true;
-        if (pathTracing != null) pathTracing.enable.value = true;
+        useFinalPT = false; 
 
         StereolabInstance.autoFlip = false;
+
+        StereolabInstance.ForceEye(true);
+        yield return CaptureRTGIQuick(leftRTGI);
+        StereolabInstance.ForceEye(false);
+        yield return CaptureRTGIQuick(rightRTGI);
+
+        EnableFrozenBlit();
+        frozen = true;
+        StereolabInstance.autoFlip = true; 
+
+        if (pathTracing != null) pathTracing.enable.value = true;
+        StereolabInstance.autoFlip = false; 
 
         // oeil gauche
         StereolabInstance.ForceEye(true);
@@ -93,11 +112,10 @@ public class StereoController : MonoBehaviour
         StereolabInstance.ForceEye(false);
         yield return AccumulateInto(rightRT);
 
-        if (pathTracing != null) pathTracing.enable.value = false;
+        if (pathTracing != null) pathTracing.enable.value = true;
 
-        EnableFrozenBlit();
-        frozen = true;
-        StereolabInstance.autoFlip = true; 
+        useFinalPT = true;
+        StereolabInstance.autoFlip = true;
         capturing = false;
     }
 
@@ -124,6 +142,28 @@ public class StereoController : MonoBehaviour
         }
     }
 
+    IEnumerator CaptureRTGIQuick(RenderTexture[] dst)
+    {
+        var prev = new RenderTexture[cameras.Length];
+        var prevRect = new Rect[cameras.Length];
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            prev[i] = cameras[i].targetTexture;
+            prevRect[i] = cameras[i].rect;
+            cameras[i].rect = new Rect(0, 0, 1, 1);
+            cameras[i].targetTexture = dst[i];
+        }
+
+        for (int f = 0; f < 2; f++)
+            yield return new WaitForEndOfFrame();
+
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].targetTexture = prev[i];
+            cameras[i].rect = prevRect[i];
+        }
+    }
+
     void EnableFrozenBlit()
     {
         RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
@@ -135,7 +175,10 @@ public class StereoController : MonoBehaviour
         int idx = System.Array.IndexOf(cameras, cam);
         if (idx < 0) return;
 
-        RenderTexture src = StereolabInstance.renderLeftEye ? leftRT[idx] : rightRT[idx];
+        RenderTexture src; 
+        if (useFinalPT) src = StereolabInstance.renderLeftEye ? leftRT[idx] : rightRT[idx];
+        else src = StereolabInstance.renderLeftEye ? leftRTGI[idx] : rightRTGI[idx];
+
         if (src == null) return;
 
         Rect r = cam.rect;
