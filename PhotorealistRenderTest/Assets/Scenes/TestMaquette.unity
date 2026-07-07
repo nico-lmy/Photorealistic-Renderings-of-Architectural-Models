@@ -136,7 +136,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11870660}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
   m_Name: 
@@ -151,6 +151,28 @@ MonoBehaviour:
   timeBeforeTransition: 0.5
   movementThreshold: 0.02
   rotationThreshold: 0.5
+--- !u!114 &11870669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11870660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
+  m_IsGlobal: 0
+  fadeRadius: 0
+  priority: 0
+  customPasses: []
+  injectionPoint: 3
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &107912936
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +400,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600654381}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
   m_Name: 
@@ -393,6 +415,28 @@ MonoBehaviour:
   timeBeforeTransition: 0.5
   movementThreshold: 0.02
   rotationThreshold: 0.5
+--- !u!114 &600654390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600654381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
+  m_IsGlobal: 0
+  fadeRadius: 0
+  priority: 0
+  customPasses: []
+  injectionPoint: 3
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &627425073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,6 +2199,61 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
   m_PrefabInstance: {fileID: 1763885743}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1616384859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1616384861}
+  - component: {fileID: 1616384860}
+  m_Layer: 0
+  m_Name: Stereo Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1616384860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616384859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030991bc60db4cd4a81740791d255c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StereoController
+  cameras:
+  - {fileID: 1763885749}
+  - {fileID: 11870664}
+  - {fileID: 600654385}
+  volume: {fileID: 349655183}
+  maxSamples: 190
+  safetyMargin: 8
+  trackedTransform: {fileID: 1673248315}
+  movementThreshold: 0.02
+  rotationThreshold: 0.05
+  timeBeforeCapture: 0.5
+--- !u!4 &1616384861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616384859}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.48984, y: 1.16845, z: -4.54169}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1673248315 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 603733064060920856, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
@@ -2363,6 +2462,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.00000007492772
       objectReference: {fileID: 0}
+    - target: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4584716356444136080, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       propertyPath: m_Name
       value: StereolabInstance
@@ -2429,12 +2532,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763885750}
+    - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1763885752}
     - targetCorrespondingSourceObject: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 11870665}
+    - targetCorrespondingSourceObject: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 11870669}
     - targetCorrespondingSourceObject: {fileID: 8902433743475767945, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 600654386}
+    - targetCorrespondingSourceObject: {fileID: 8902433743475767945, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 600654390}
   m_SourcePrefab: {fileID: 100100000, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
 --- !u!4 &1763885744 stripped
 Transform:
@@ -2592,7 +2704,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597096495}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
   m_Name: 
@@ -2607,6 +2719,28 @@ MonoBehaviour:
   timeBeforeTransition: 0.5
   movementThreshold: 0.02
   rotationThreshold: 0.5
+--- !u!114 &1763885752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597096495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
+  m_IsGlobal: 0
+  fadeRadius: 0
+  priority: 0
+  customPasses: []
+  injectionPoint: 3
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1772841420
 GameObject:
   m_ObjectHideFlags: 0
@@ -3710,6 +3844,7 @@ SceneRoots:
   - {fileID: 1457160165}
   - {fileID: 1493643095}
   - {fileID: 1739693968}
+  - {fileID: 1616384861}
   - {fileID: 1452192765}
   - {fileID: 1271793631}
   - {fileID: 1501805581}
