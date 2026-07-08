@@ -45,8 +45,8 @@ public class StereoController : MonoBehaviour
 
         for (int i = 0; i < cameras.Length; i++)
         {
-            int w = Screen.width;
-            int h = Screen.height;
+            int w = Screen.width / 2;
+            int h = Screen.height / 2;
             leftRT[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             rightRT[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             leftRTGI[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
@@ -115,6 +115,7 @@ public class StereoController : MonoBehaviour
         if (pathTracing != null) pathTracing.enable.value = true;
 
         useFinalPT = true;
+        pathTracing.enable.value = false; 
         StereolabInstance.autoFlip = true;
         capturing = false;
     }
@@ -171,6 +172,7 @@ public class StereoController : MonoBehaviour
 
     void OnEndCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
+        Debug.Log("OnEndCameraRendering");
         if (!frozen) return;
         int idx = System.Array.IndexOf(cameras, cam);
         if (idx < 0) return;
