@@ -202,4 +202,15 @@ public class StereoController : MonoBehaviour
         StereolabInstance.autoFlip = true;
         stopTimer = 0f;
     }
+
+    void OnDestroy()
+    {
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            if (leftRT[i]) leftRT[i].Release();
+            if (rightRT[i]) rightRT[i].Release();
+            if (leftRTGI[i]) leftRTGI[i].Release();
+            if (rightRTGI[i]) rightRTGI[i].Release();
+        }
+    }
 }
