@@ -21,6 +21,7 @@ public class StereoController : MonoBehaviour
     public float timeBeforeCapture = 0.5f;
 
     private PathTracing pathTracing;
+    private GlobalIllumination globalIllumination;
     private RenderTexture[] leftRT = new RenderTexture[3];
     private RenderTexture[] rightRT = new RenderTexture[3];
     private RenderTexture[] leftRTGI = new RenderTexture[3];
@@ -36,6 +37,8 @@ public class StereoController : MonoBehaviour
     {
         if (volume != null && volume.profile.TryGet<PathTracing>(out var pt))
             pathTracing = pt;
+        if (volume != null && volume.profile.TryGet<GlobalIllumination>(out var gi))
+            globalIllumination = gi;
 
         if (trackedTransform != null)
         {
@@ -74,6 +77,7 @@ public class StereoController : MonoBehaviour
         {
             stopTimer = 0f;
             if (frozen) Unfreeze();
+            if (globalIllumination != null) globalIllumination.active = true;
             if (pathTracing != null && pathTracing.enable.value)
                 pathTracing.enable.value = false;
         }
@@ -92,11 +96,6 @@ public class StereoController : MonoBehaviour
 
         StereolabInstance.autoFlip = false;
 
-        StereolabInstance.ForceEye(true);
-        yield return CaptureRTGIQuick(leftRTGI);
-        StereolabInstance.ForceEye(false);
-        yield return CaptureRTGIQuick(rightRTGI);
-
         EnableFrozenBlit();
         frozen = true;
         StereolabInstance.autoFlip = true; 
@@ -112,10 +111,9 @@ public class StereoController : MonoBehaviour
         StereolabInstance.ForceEye(false);
         yield return AccumulateInto(rightRT);
 
-        if (pathTracing != null) pathTracing.enable.value = true;
-
         useFinalPT = true;
         pathTracing.enable.value = false; 
+        if (globalIllumination != null) globalIllumination.active = false;
         StereolabInstance.autoFlip = true;
         capturing = false;
     }
@@ -172,7 +170,6 @@ public class StereoController : MonoBehaviour
 
     void OnEndCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
-        Debug.Log("OnEndCameraRendering");
         if (!frozen) return;
         int idx = System.Array.IndexOf(cameras, cam);
         if (idx < 0) return;
