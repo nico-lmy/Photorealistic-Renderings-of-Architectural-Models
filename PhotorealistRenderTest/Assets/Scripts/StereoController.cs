@@ -20,6 +20,10 @@ public class StereoController : MonoBehaviour
     public float rotationThreshold = 0.05f;
     public float timeBeforeCapture = 0.5f;
 
+    [Header("Manual trigger")]
+    public KeyCode captureKey = KeyCode.Space;
+    public string captureButton = "";
+
     private PathTracing pathTracing;
     private GlobalIllumination globalIllumination;
     private RenderTexture[] leftRT = new RenderTexture[3];
@@ -31,7 +35,6 @@ public class StereoController : MonoBehaviour
     private bool useFinalPT = false;
     private Vector3 lastPos;
     private Quaternion lastRot;
-    private float stopTimer = 0f;
 
     void Start()
     {
@@ -45,6 +48,8 @@ public class StereoController : MonoBehaviour
             lastPos = trackedTransform.position;
             lastRot = trackedTransform.rotation;
         }
+        if (pathTracing != null) pathTracing.enable.value = false;
+        if (globalIllumination != null) globalIllumination.active = true;
 
         for (int i = 0; i < cameras.Length; i++)
         {
@@ -73,20 +78,17 @@ public class StereoController : MonoBehaviour
         lastPos = trackedTransform.position;
         lastRot = trackedTransform.rotation;
 
-        if (moving)
+        if (moving && frozen)
         {
-            stopTimer = 0f;
-            if (frozen) Unfreeze();
+            Unfreeze();
             if (globalIllumination != null) globalIllumination.active = true;
             if (pathTracing != null && pathTracing.enable.value)
                 pathTracing.enable.value = false;
         }
-        else if (!frozen)
-        {
-            stopTimer += Time.deltaTime;
-            if (stopTimer >= timeBeforeCapture)
-                StartCoroutine(CaptureRoutine());
-        }
+        
+        bool pressed = Input.GetKeyDown(captureKey); 
+        if (!string.IsNullOrEmpty(captureButton)) pressed = pressed || Input.GetButtonDown(captureButton);
+        if (pressed && !frozen) StartCoroutine(CaptureRoutine());
     }
 
     IEnumerator CaptureRoutine()
@@ -199,7 +201,31 @@ public class StereoController : MonoBehaviour
         frozen = false;
         RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
         StereolabInstance.autoFlip = true;
-        stopTimer = 0f;
+    }
+
+    void OnGUI()
+    {
+        if (!capturing) return;
+
+        string msg = "Rendering...";
+        int fontSize = 40;
+
+        GUIStyle style = new GUIStyle(GUI.skin.label);
+        style.fontSize = fontSize;
+        style.normal.textColor = Color.white;
+        style.alignment = TextAnchor.MiddleCenter;
+
+        float boxW = 300, boxH = 80;
+        Rect rect = new Rect((Screen.width - boxW) / 2f,
+                            (Screen.height - boxH) / 2f,
+                            boxW, boxH);
+
+        // fond semi-transparent
+        GUI.color = new Color(0, 0, 0, 0.5f);
+        GUI.DrawTexture(rect, Texture2D.whiteTexture);
+        GUI.color = Color.white;
+
+        GUI.Label(rect, msg, style);
     }
 
     void OnDestroy()
