@@ -22,6 +22,7 @@ public class StereoController : MonoBehaviour
 
     [Header("Manual trigger")]
     public KeyCode captureKey = KeyCode.Space;
+    public KeyCode forceUnfreezeKey = KeyCode.Backspace;
     public string captureButton = "";
 
     private PathTracing pathTracing;
@@ -73,12 +74,12 @@ public class StereoController : MonoBehaviour
 
         float dist  = Vector3.Distance(lastPos, trackedTransform.position);
         float angle = Quaternion.Angle(lastRot, trackedTransform.rotation);
-        bool moving = dist > movementThreshold || angle > rotationThreshold;
+        //bool moving = dist > movementThreshold || angle > rotationThreshold;
 
         lastPos = trackedTransform.position;
         lastRot = trackedTransform.rotation;
 
-        if (moving && frozen)
+        if (frozen && Input.GetKeyDown(forceUnfreezeKey))
         {
             Unfreeze();
             if (globalIllumination != null) globalIllumination.active = true;
@@ -95,15 +96,11 @@ public class StereoController : MonoBehaviour
     {
         capturing = true;
         useFinalPT = false; 
+        frozen = true;
 
         StereolabInstance.autoFlip = false;
 
-        EnableFrozenBlit();
-        frozen = true;
-        StereolabInstance.autoFlip = true; 
-
         if (pathTracing != null) pathTracing.enable.value = true;
-        StereolabInstance.autoFlip = false; 
 
         // oeil gauche
         StereolabInstance.ForceEye(true);
@@ -116,6 +113,7 @@ public class StereoController : MonoBehaviour
         useFinalPT = true;
         pathTracing.enable.value = false; 
         if (globalIllumination != null) globalIllumination.active = false;
+        foreach (var cam in cameras) cam.enabled = false;
         StereolabInstance.autoFlip = true;
         capturing = false;
     }
@@ -165,12 +163,7 @@ public class StereoController : MonoBehaviour
         }
     }
 
-    void EnableFrozenBlit()
-    {
-        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
-    }
-
-    void OnEndCameraRendering(ScriptableRenderContext ctx, Camera cam)
+    /*void OnEndCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
         if (!frozen) return;
         int idx = System.Array.IndexOf(cameras, cam);
@@ -194,17 +187,31 @@ public class StereoController : MonoBehaviour
                                     r.height * Screen.height), src);
 
         GL.PopMatrix();
-    }
+    }*/
 
     void Unfreeze()
     {
         frozen = false;
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
+        foreach (var cam in cameras) cam.enabled = true;
         StereolabInstance.autoFlip = true;
     }
 
     void OnGUI()
     {
+        if (frozen && Event.current.type == EventType.Repaint)
+            for (int i = 0; i < cameras.Length; i++)
+            {
+                RenderTexture src = useFinalPT ?
+                    (StereolabInstance.renderLeftEye ? leftRT[i] : rightRT[i])
+                    : (StereolabInstance.renderLeftEye ? leftRTGI[i] : rightRTGI[i]);
+                if (src == null) continue;
+                
+                Rect r = cameras[i].rect;
+                GUI.DrawTexture(new Rect(r.x * Screen.width,
+                                (1f - r.y - r.height) * Screen.height,
+                                r.width * Screen.width,
+                                r.height * Screen.height), src);
+            }
         if (!capturing) return;
 
         string msg = "Rendering...";

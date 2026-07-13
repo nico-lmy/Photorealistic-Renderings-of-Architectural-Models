@@ -2240,6 +2240,9 @@ MonoBehaviour:
   movementThreshold: 0.02
   rotationThreshold: 0.05
   timeBeforeCapture: 1
+  captureKey: 32
+  forceUnfreezeKey: 8
+  captureButton: 
 --- !u!4 &1616384861
 Transform:
   m_ObjectHideFlags: 0
