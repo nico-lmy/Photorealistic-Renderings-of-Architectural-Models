@@ -6,7 +6,6 @@ public class FPSDisplay : MonoBehaviour
 
     void Start()
     {
-        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = -1;
         Debug.Log($"vSync={QualitySettings.vSyncCount}, target={Application.targetFrameRate}");
     }
