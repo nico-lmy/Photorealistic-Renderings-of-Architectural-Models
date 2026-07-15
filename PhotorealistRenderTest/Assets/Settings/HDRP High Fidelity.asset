@@ -169,7 +169,7 @@ MonoBehaviour:
       enabled: 1
       useMipBias: 0
       advancedUpscalersByPriority: 00
-      DLSSPerfQualitySetting: 1
+      DLSSPerfQualitySetting: 3
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
       STPInjectionPoint: 0
