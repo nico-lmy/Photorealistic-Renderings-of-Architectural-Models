@@ -500,7 +500,7 @@ MonoBehaviour:
     m_Value: 7
   m_RayLength:
     m_OverrideState: 1
-    m_Value: 80
+    m_Value: 30
   m_ClampValue:
     m_OverrideState: 1
     m_Value: 100
