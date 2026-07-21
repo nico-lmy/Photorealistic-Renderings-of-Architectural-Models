@@ -1,0 +1,35 @@
+#pragma kernel CSMain
+
+Texture2D<float4> InputTexture;
+RWTexture2D<float4> OutputTexture;
+
+float _EV;
+float _MinLuminance;
+float _MaxLuminance;
+
+float3 GetHeatmapColor(float t)
+{
+    t = saturate(t);
+    
+    float3 c0 = float3(0, 0, 1); // bleu
+    float3 c1 = float3(0, 1, 1); // cyan
+    float3 c2 = float3(0, 1, 0); // vert
+    float3 c3 = float3(1, 1, 0); // jaune
+    float3 c4 = float3(1, 0, 0); // rouge
+
+    if (t < 0.25) return lerp(c0, c1, t / 0.25);
+    if (t < 0.50) return lerp(c1, c2, (t - 0.25) / 0.25);
+    if (t < 0.75) return lerp(c2, c3, (t - 0.50) / 0.25);
+    return lerp(c3, c4, (t - 0.75) / 0.25);
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float3 color = InputTexture[id.xy].rgb;
+    float Y = dot(color, float3(0.2126, 0.7152, 0.0722));
+    float sceneLuminance = Y * exp2(_EV);
+    float t = (sceneLuminance - _MinLuminance) / (_MaxLuminance - _MinLuminance);
+    float3 heatmapColor = GetHeatmapColor(t);
+    OutputTexture[id.xy] = float4(heatmapColor, 1.0);
+}

@@ -25,15 +25,22 @@ public class StereoController : MonoBehaviour
     public KeyCode forceUnfreezeKey = KeyCode.Backspace;
     public string captureButton = "";
 
+    [Header("Light analysis")]
+    public LuminanceAnalyzer luminanceAnalyzer;
+    public int cameraIndexToAnalyze = 0;
+
     private PathTracing pathTracing;
     private GlobalIllumination globalIllumination;
     private RenderTexture[] leftRT = new RenderTexture[3];
     private RenderTexture[] rightRT = new RenderTexture[3];
     private RenderTexture[] leftRTGI = new RenderTexture[3];
     private RenderTexture[] rightRTGI = new RenderTexture[3];
+    private RenderTexture[] heatmapLeftRTs = new RenderTexture[3];
+    private RenderTexture[] heatmapRightRTs = new RenderTexture[3];
     private bool frozen = false;
     private bool capturing = false;
     private bool useFinalPT = false;
+    private bool showHeatmap = false;
     private Vector3 lastPos;
     private Quaternion lastRot;
 
@@ -86,6 +93,21 @@ public class StereoController : MonoBehaviour
             if (pathTracing != null && pathTracing.enable.value)
                 pathTracing.enable.value = false;
         }
+
+        if (frozen && !capturing && Input.GetKeyDown(KeyCode.H))
+        {
+            showHeatmap = !showHeatmap; 
+            if (showHeatmap && luminanceAnalyzer != null)
+            {
+                for (int i = 0; i < cameras.Length; i++)
+                {
+                    // Génération pour l'oeil gauche ET l'oeil droit
+                    luminanceAnalyzer.GenerateHeatmap(leftRT[i], ref heatmapLeftRTs[i]);
+                    luminanceAnalyzer.GenerateHeatmap(rightRT[i], ref heatmapRightRTs[i]);
+                }
+                Debug.Log("Heatmaps stéréo générées sur les 3 vues !");
+            }
+        }
         
         bool pressed = Input.GetKeyDown(captureKey); 
         if (!string.IsNullOrEmpty(captureButton)) pressed = pressed || Input.GetButtonDown(captureButton);
@@ -99,6 +121,11 @@ public class StereoController : MonoBehaviour
         frozen = true;
 
         StereolabInstance.autoFlip = false;
+
+        StereolabInstance.ForceEye(true);
+        yield return CaptureRTGIQuick(leftRTGI);
+        StereolabInstance.ForceEye(false);
+        yield return CaptureRTGIQuick(rightRTGI);
 
         if (pathTracing != null) pathTracing.enable.value = true;
 
@@ -163,35 +190,10 @@ public class StereoController : MonoBehaviour
         }
     }
 
-    /*void OnEndCameraRendering(ScriptableRenderContext ctx, Camera cam)
-    {
-        if (!frozen) return;
-        int idx = System.Array.IndexOf(cameras, cam);
-        if (idx < 0) return;
-
-        RenderTexture src; 
-        if (useFinalPT) src = StereolabInstance.renderLeftEye ? leftRT[idx] : rightRT[idx];
-        else src = StereolabInstance.renderLeftEye ? leftRTGI[idx] : rightRTGI[idx];
-
-        if (src == null) return;
-
-        Rect r = cam.rect;
-
-        RenderTexture.active = null;
-        GL.PushMatrix();
-        GL.LoadPixelMatrix(0, Screen.width, Screen.height, 0);
-
-        Graphics.DrawTexture(new Rect(r.x * Screen.width,
-                                    r.y * Screen.height,
-                                    r.width * Screen.width,
-                                    r.height * Screen.height), src);
-
-        GL.PopMatrix();
-    }*/
-
     void Unfreeze()
     {
         frozen = false;
+        showHeatmap = false;
         foreach (var cam in cameras) cam.enabled = true;
         StereolabInstance.autoFlip = true;
     }
@@ -201,7 +203,10 @@ public class StereoController : MonoBehaviour
         if (frozen && Event.current.type == EventType.Repaint)
             for (int i = 0; i < cameras.Length; i++)
             {
-                RenderTexture src = useFinalPT ?
+                RenderTexture src = null;
+                if (showHeatmap && heatmapLeftRTs[i] != null && heatmapRightRTs[i] != null) 
+                    src = StereolabInstance.renderLeftEye ? heatmapLeftRTs[i] : heatmapRightRTs[i];
+                else src = useFinalPT ?
                     (StereolabInstance.renderLeftEye ? leftRT[i] : rightRT[i])
                     : (StereolabInstance.renderLeftEye ? leftRTGI[i] : rightRTGI[i]);
                 if (src == null) continue;
@@ -210,7 +215,7 @@ public class StereoController : MonoBehaviour
                 GUI.DrawTexture(new Rect(r.x * Screen.width,
                                 (1f - r.y - r.height) * Screen.height,
                                 r.width * Screen.width,
-                                r.height * Screen.height), src);
+                                r.height * Screen.height), src, ScaleMode.StretchToFill, false);
             }
         if (!capturing) return;
 
@@ -243,6 +248,8 @@ public class StereoController : MonoBehaviour
             if (rightRT[i]) rightRT[i].Release();
             if (leftRTGI[i]) leftRTGI[i].Release();
             if (rightRTGI[i]) rightRTGI[i].Release();
+            if (heatmapLeftRTs[i]) heatmapLeftRTs[i].Release();
+            if (heatmapRightRTs[i]) heatmapRightRTs[i].Release();
         }
     }
 }
