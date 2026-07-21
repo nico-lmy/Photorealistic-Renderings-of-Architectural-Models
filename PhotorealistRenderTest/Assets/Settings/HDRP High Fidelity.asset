@@ -169,12 +169,12 @@ MonoBehaviour:
       enabled: 1
       useMipBias: 0
       advancedUpscalersByPriority: 00
-      DLSSPerfQualitySetting: 1
+      DLSSPerfQualitySetting: 3
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
       STPInjectionPoint: 0
       defaultInjectionPoint: 2
-      DLSSUseOptimalSettings: 0
+      DLSSUseOptimalSettings: 1
       DLSSSharpness: 0
       FSR2EnableSharpness: 0
       FSR2Sharpness: 0
@@ -548,5 +548,5 @@ MonoBehaviour:
   m_ObsoleteDiffusionProfileSettingsList:
   - {fileID: 0}
   - {fileID: 0}
-  m_PrefilterUseLegacyLightmaps: 0
+  m_PrefilterUseLegacyLightmaps: 1
   m_PrefilterUseLightmapBicubicSampling: 0
