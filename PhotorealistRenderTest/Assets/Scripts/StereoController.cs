@@ -18,7 +18,6 @@ public class StereoController : MonoBehaviour
     public Transform trackedTransform;
     public float movementThreshold = 0.02f;
     public float rotationThreshold = 0.05f;
-    public float timeBeforeCapture = 0.5f;
 
     [Header("Manual trigger")]
     public KeyCode captureKey = KeyCode.Space;
@@ -27,7 +26,6 @@ public class StereoController : MonoBehaviour
 
     [Header("Light analysis")]
     public LuminanceAnalyzer luminanceAnalyzer;
-    public int cameraIndexToAnalyze = 0;
 
     private PathTracing pathTracing;
     private GlobalIllumination globalIllumination;
@@ -43,6 +41,8 @@ public class StereoController : MonoBehaviour
     private bool showHeatmap = false;
     private Vector3 lastPos;
     private Quaternion lastRot;
+    private Texture2D legendTexture;
+    private GUIStyle legendStyle;
 
     void Start()
     {
@@ -72,16 +72,13 @@ public class StereoController : MonoBehaviour
             leftRTGI[i].Create();
             rightRTGI[i].Create();
         }
+        CreateLegendTexture();
 
     }
 
     void Update()
     {
         if (trackedTransform == null || capturing) return;
-
-        float dist  = Vector3.Distance(lastPos, trackedTransform.position);
-        float angle = Quaternion.Angle(lastRot, trackedTransform.rotation);
-        //bool moving = dist > movementThreshold || angle > rotationThreshold;
 
         lastPos = trackedTransform.position;
         lastRot = trackedTransform.rotation;
@@ -105,7 +102,6 @@ public class StereoController : MonoBehaviour
                     luminanceAnalyzer.GenerateHeatmap(leftRT[i], ref heatmapLeftRTs[i]);
                     luminanceAnalyzer.GenerateHeatmap(rightRT[i], ref heatmapRightRTs[i]);
                 }
-                Debug.Log("Heatmaps stéréo générées sur les 3 vues !");
             }
         }
         
@@ -138,7 +134,7 @@ public class StereoController : MonoBehaviour
         yield return AccumulateInto(rightRT);
 
         useFinalPT = true;
-        pathTracing.enable.value = false; 
+        if (pathTracing != null) pathTracing.enable.value = false; 
         if (globalIllumination != null) globalIllumination.active = false;
         foreach (var cam in cameras) cam.enabled = false;
         StereolabInstance.autoFlip = true;
@@ -217,27 +213,92 @@ public class StereoController : MonoBehaviour
                                 r.width * Screen.width,
                                 r.height * Screen.height), src, ScaleMode.StretchToFill, false);
             }
-        if (!capturing) return;
 
-        string msg = "Rendering...";
-        int fontSize = 40;
+        if (capturing) 
+        {
+            string msg = "Rendering...";
+            int fontSize = 40;
 
-        GUIStyle style = new GUIStyle(GUI.skin.label);
-        style.fontSize = fontSize;
-        style.normal.textColor = Color.white;
-        style.alignment = TextAnchor.MiddleCenter;
+            GUIStyle style = new GUIStyle(GUI.skin.label);
+            style.fontSize = fontSize;
+            style.normal.textColor = Color.white;
+            style.alignment = TextAnchor.MiddleCenter;
 
-        float boxW = 300, boxH = 80;
-        Rect rect = new Rect((Screen.width - boxW) / 2f,
-                            (Screen.height - boxH) / 2f,
-                            boxW, boxH);
+            float boxW = 300, boxH = 80;
+            Rect rect = new Rect((Screen.width - boxW) / 2f,
+                                (Screen.height - boxH) / 2f,
+                                boxW, boxH);
 
-        // fond semi-transparent
-        GUI.color = new Color(0, 0, 0, 0.5f);
-        GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            // fond semi-transparent
+            GUI.color = new Color(0, 0, 0, 0.5f);
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+
+            GUI.Label(rect, msg, style);
+        }
+        if (frozen && showHeatmap && !capturing) DrawLegend();
+    }
+
+    void DrawLegend()
+    {
+        if (legendStyle == null)
+        {
+            legendStyle = new GUIStyle(GUI.skin.label);
+            legendStyle.fontSize = 20;
+            legendStyle.normal.textColor = Color.white;
+            legendStyle.alignment = TextAnchor.MiddleLeft;
+            legendStyle.wordWrap = false;
+        }
+
+        float width = 40f;
+        float height = 400f;
+        float bgWidth = 160f;
+        float startX = Screen.width - bgWidth - width - 20f;
+        float startY = (Screen.height - height) / 2f;
+
+        GUI.color = new Color(0, 0, 0, 0.7f);
+        GUI.DrawTexture(new Rect(startX - 15, startY - 30, width + bgWidth + 30, height + 60), Texture2D.whiteTexture);
         GUI.color = Color.white;
 
-        GUI.Label(rect, msg, style);
+        GUI.DrawTexture(new Rect(startX, startY, width, height), legendTexture);
+
+        if (luminanceAnalyzer != null)
+        {
+            float max = luminanceAnalyzer.maxLuminance;
+            float min = luminanceAnalyzer.minLuminance;
+            float mid = (max + min) / 2f;
+            float labelWidth = 150f;
+
+            GUI.Label(new Rect(startX + width + 15, startY - 15, labelWidth, 30), max.ToString("0") + " cd/m²", legendStyle);
+            GUI.Label(new Rect(startX + width + 15, startY + (height / 2f) - 15, labelWidth, 30), mid.ToString("0") + " cd/m²", legendStyle);
+            GUI.Label(new Rect(startX + width + 15, startY + height - 15, labelWidth, 30), min.ToString("0") + " cd/m²", legendStyle);
+        }
+    }
+
+    void CreateLegendTexture()
+    {
+        legendTexture = new Texture2D(1, 100);
+        for (int y = 0; y < 100; y++)
+        {
+            float t = y / 99f;
+            legendTexture.SetPixel(0, y, GetHeatmapColor(t));
+        }
+        legendTexture.Apply();
+    }
+
+    Color GetHeatmapColor(float t)
+    {
+        t = Mathf.Clamp01(t);
+        Color c0 = Color.blue;
+        Color c1 = Color.cyan;
+        Color c2 = Color.green;
+        Color c3 = Color.yellow;
+        Color c4 = Color.red;
+
+        if (t < 0.25f) return Color.Lerp(c0, c1, t / 0.25f);
+        if (t < 0.50f) return Color.Lerp(c1, c2, (t - 0.25f) / 0.25f);
+        if (t < 0.75f) return Color.Lerp(c2, c3, (t - 0.50f) / 0.25f);
+        return Color.Lerp(c3, c4, (t - 0.75f) / 0.25f);
     }
 
     void OnDestroy()
