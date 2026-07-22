@@ -246,14 +246,14 @@ public class StereoController : MonoBehaviour
             legendStyle = new GUIStyle(GUI.skin.label);
             legendStyle.fontSize = 20;
             legendStyle.normal.textColor = Color.white;
-            legendStyle.alignment = TextAnchor.MiddleLeft;
+            legendStyle.alignment = TextAnchor.MiddleRight;
             legendStyle.wordWrap = false;
         }
 
         float width = 40f;
         float height = 400f;
         float bgWidth = 160f;
-        float startX = Screen.width - bgWidth - width - 20f;
+        float startX = 30f;
         float startY = (Screen.height - height) / 2f;
 
         GUI.color = new Color(0, 0, 0, 0.7f);

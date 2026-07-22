@@ -119,60 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &11870660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-  m_PrefabInstance: {fileID: 1763885743}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &11870664 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5098457757082766148, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
   m_PrefabInstance: {fileID: 1763885743}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &11870665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11870660}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TransitionController
-  volume: {fileID: 349655183}
-  targetCamera: {fileID: 11870664}
-  fadeDuration: 0.5
-  holdDuration: 0.2
-  darkExposure: -30
-  blurFocusDistance: 0.2
-  isMoving: 0
-  timeBeforeTransition: 0.5
-  movementThreshold: 0.02
-  rotationThreshold: 0.5
---- !u!114 &11870669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11870660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
-  m_IsGlobal: 0
-  fadeRadius: 0
-  priority: 0
-  customPasses: []
-  injectionPoint: 3
-  m_TargetCamera: {fileID: 0}
-  useTargetCamera: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &107912936
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,60 +339,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &600654381 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8902433743475767945, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-  m_PrefabInstance: {fileID: 1763885743}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &600654385 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 893082457312026419, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
   m_PrefabInstance: {fileID: 1763885743}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &600654386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 600654381}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TransitionController
-  volume: {fileID: 349655183}
-  targetCamera: {fileID: 600654385}
-  fadeDuration: 0.5
-  holdDuration: 0.2
-  darkExposure: -30
-  blurFocusDistance: 0.2
-  isMoving: 0
-  timeBeforeTransition: 0.5
-  movementThreshold: 0.02
-  rotationThreshold: 0.5
---- !u!114 &600654390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 600654381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
-  m_IsGlobal: 0
-  fadeRadius: 0
-  priority: 0
-  customPasses: []
-  injectionPoint: 3
-  m_TargetCamera: {fileID: 0}
-  useTargetCamera: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &627425073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2245,12 +2147,10 @@ MonoBehaviour:
   trackedTransform: {fileID: 1673248315}
   movementThreshold: 0.02
   rotationThreshold: 0.05
-  timeBeforeCapture: 1
   captureKey: 32
   forceUnfreezeKey: 8
   captureButton: 
   luminanceAnalyzer: {fileID: 1616384863}
-  cameraIndexToAnalyze: 0
 --- !u!4 &1616384861
 Transform:
   m_ObjectHideFlags: 0
@@ -2728,24 +2628,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763885747}
-    - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1763885750}
-    - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1763885752}
-    - targetCorrespondingSourceObject: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 11870665}
-    - targetCorrespondingSourceObject: {fileID: 3543855447878758142, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 11870669}
-    - targetCorrespondingSourceObject: {fileID: 8902433743475767945, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 600654386}
-    - targetCorrespondingSourceObject: {fileID: 8902433743475767945, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 600654390}
   m_SourcePrefab: {fileID: 100100000, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
 --- !u!114 &1763885747
 MonoBehaviour:
@@ -2891,50 +2773,6 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 874356385146996081, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
   m_PrefabInstance: {fileID: 1763885743}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1763885750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597096495}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b32be3ab6b7be84e97b9e5c9f77a86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TransitionController
-  volume: {fileID: 349655183}
-  targetCamera: {fileID: 1763885749}
-  fadeDuration: 0.5
-  holdDuration: 0.2
-  darkExposure: -30
-  blurFocusDistance: 0.2
-  isMoving: 0
-  timeBeforeTransition: 0.5
-  movementThreshold: 0.02
-  rotationThreshold: 0.5
---- !u!114 &1763885752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597096495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.CustomPassVolume
-  m_IsGlobal: 0
-  fadeRadius: 0
-  priority: 0
-  customPasses: []
-  injectionPoint: 3
-  m_TargetCamera: {fileID: 0}
-  useTargetCamera: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &1772841420
 GameObject:
   m_ObjectHideFlags: 0
