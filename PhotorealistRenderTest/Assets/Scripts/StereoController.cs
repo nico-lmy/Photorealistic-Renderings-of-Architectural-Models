@@ -35,6 +35,7 @@ public class StereoController : MonoBehaviour
     private RenderTexture[] rightRTGI = new RenderTexture[3];
     private RenderTexture[] heatmapLeftRTs = new RenderTexture[3];
     private RenderTexture[] heatmapRightRTs = new RenderTexture[3];
+    [HideInInspector] public Texture2D[] frozenTextures = new Texture2D[3];
     private bool frozen = false;
     private bool capturing = false;
     private bool useFinalPT = false;
@@ -71,14 +72,22 @@ public class StereoController : MonoBehaviour
             rightRT[i].Create();
             leftRTGI[i].Create();
             rightRTGI[i].Create();
+            frozenTextures[i] = new Texture2D(w, h, TextureFormat.RGBAHalf, false);
         }
         CreateLegendTexture();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
     }
 
     void Update()
     {
         if (trackedTransform == null || capturing) return;
+        if (frozen)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
 
         lastPos = trackedTransform.position;
         lastRot = trackedTransform.rotation;
@@ -138,7 +147,16 @@ public class StereoController : MonoBehaviour
         if (globalIllumination != null) globalIllumination.active = false;
         foreach (var cam in cameras) cam.enabled = false;
         StereolabInstance.autoFlip = true;
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            RenderTexture.active = leftRT[i];
+            frozenTextures[i].ReadPixels(new Rect(0, 0, leftRT[i].width, leftRT[i].height), 0, 0);
+            frozenTextures[i].Apply();
+        }
+        RenderTexture.active = null;
         capturing = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     IEnumerator AccumulateInto(RenderTexture[] dst)
@@ -192,6 +210,8 @@ public class StereoController : MonoBehaviour
         showHeatmap = false;
         foreach (var cam in cameras) cam.enabled = true;
         StereolabInstance.autoFlip = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void OnGUI()
