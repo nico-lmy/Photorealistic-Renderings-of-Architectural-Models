@@ -11,11 +11,11 @@ float3 GetHeatmapColor(float t)
 {
     t = saturate(t);
     
-    float3 c0 = float3(0, 0, 1); // bleu
-    float3 c1 = float3(0, 1, 1); // cyan
-    float3 c2 = float3(0, 1, 0); // vert
-    float3 c3 = float3(1, 1, 0); // jaune
-    float3 c4 = float3(1, 0, 0); // rouge
+    float3 c0 = float3(0, 0, 0); // noir
+    float3 c1 = float3(0.34, 0.06, 0.43); // violet foncé
+    float3 c2 = float3(0.87, 0.32, 0.23); // rouge orangé
+    float3 c3 = float3(0.96, 0.68, 0.16); // jaune moutarde
+    float3 c4 = float3(0.99, 0.99, 0.75); // jaune clair
 
     if (t < 0.25) return lerp(c0, c1, t / 0.25);
     if (t < 0.50) return lerp(c1, c2, (t - 0.25) / 0.25);

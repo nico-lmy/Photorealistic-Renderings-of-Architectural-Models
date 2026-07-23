@@ -7,9 +7,13 @@ public class LuminanceProbe : MonoBehaviour
     [Tooltip("Multiplier for converting Unity's raw value to actual cd/m²")]
     public float calibrationFactor = 1000f; 
 
-    private float currentLuminance = 0f;
     private bool hasClicked = false;
     private Vector2 clickPositionGUI = Vector2.zero;
+
+    private float totalLuminance = 0f;
+    private float naturalLuminance = 0f;
+    private float artificialLuminance = 0f;
+    private float ratio = 0f;
 
     void Update()
     {
@@ -41,8 +45,9 @@ public class LuminanceProbe : MonoBehaviour
 
                 if (guiRect.Contains(mouseGUI))
                 {
-                    Texture2D tex = stereoController.frozenTextures[i];
-                    if (tex != null)
+                    Texture2D texTotal = stereoController.frozenTextures[i];
+                    Texture2D texNat = stereoController.frozenTexturesNat[i];
+                    if (texTotal != null && texNat != null)
                     {
                         hasClicked = true;
                         clickPositionGUI = mouseGUI; 
@@ -50,10 +55,18 @@ public class LuminanceProbe : MonoBehaviour
                         float u = (mouseGUI.x - guiRect.x) / guiRect.width;
                         float v = 1f - ((mouseGUI.y - guiRect.y) / guiRect.height);
 
-                        Color hdrColor = tex.GetPixelBilinear(u, v);
+                        Color colorTotal = texTotal.GetPixelBilinear(u, v);
+                        Color colorNat = texNat.GetPixelBilinear(u, v);
 
-                        float rawLuminance = (0.2126f * hdrColor.r + 0.7152f * hdrColor.g + 0.0722f * hdrColor.b);
-                        currentLuminance = rawLuminance * calibrationFactor;
+                        float rawTotal = (0.2126f * colorTotal.r + 0.7152f * colorTotal.g + 0.0722f * colorTotal.b);
+                        float rawNat = (0.2126f * colorNat.r + 0.7152f * colorNat.g + 0.0722f * colorNat.b);
+
+                        totalLuminance = rawTotal * calibrationFactor;
+                        naturalLuminance = rawNat * calibrationFactor;
+                        artificialLuminance = Mathf.Max(0, totalLuminance - naturalLuminance);
+
+                        if (totalLuminance > 0.1f) ratio = (naturalLuminance / totalLuminance) * 100f;
+                        else ratio = 0f;
                     }
                     break;
                 }
@@ -66,8 +79,13 @@ public class LuminanceProbe : MonoBehaviour
         if (hasClicked && stereoController != null && !stereoController.cameras[0].enabled) 
         {
             GUI.color = Color.yellow;
-            GUI.skin.label.fontSize = 30;
-            GUI.Label(new Rect(50, 50, 400, 50), "Luminance : " + currentLuminance.ToString("0.0") + " cd/m²");
+            GUI.skin.label.fontSize = 24;
+            string info = $"Total Luminance : {totalLuminance:0.0} cd/m²\n" +
+                          $"Natural Luminance : {naturalLuminance:0.0} cd/m²\n" +
+                          $"Artificial Luminance : {artificialLuminance:0.0} cd/m²\n" +
+                          $"Natural-to-Total Ratio : {ratio:0.0} %";
+
+            GUI.Label(new Rect(50, 50, 600, 300), info);
 
             GUI.color = Color.red;
             float size = 20f;

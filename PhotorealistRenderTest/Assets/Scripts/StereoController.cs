@@ -26,16 +26,20 @@ public class StereoController : MonoBehaviour
 
     [Header("Light analysis")]
     public LuminanceAnalyzer luminanceAnalyzer;
+    public GameObject artificialLightsParent;
 
     private PathTracing pathTracing;
     private GlobalIllumination globalIllumination;
     private RenderTexture[] leftRT = new RenderTexture[3];
     private RenderTexture[] rightRT = new RenderTexture[3];
+    private RenderTexture[] leftRT_Nat = new RenderTexture[3];
+    private RenderTexture[] rightRT_Nat = new RenderTexture[3];
     private RenderTexture[] leftRTGI = new RenderTexture[3];
     private RenderTexture[] rightRTGI = new RenderTexture[3];
     private RenderTexture[] heatmapLeftRTs = new RenderTexture[3];
     private RenderTexture[] heatmapRightRTs = new RenderTexture[3];
     [HideInInspector] public Texture2D[] frozenTextures = new Texture2D[3];
+    [HideInInspector] public Texture2D[] frozenTexturesNat = new Texture2D[3];
     private bool frozen = false;
     private bool capturing = false;
     private bool useFinalPT = false;
@@ -66,6 +70,8 @@ public class StereoController : MonoBehaviour
             int h = Screen.height / 2;
             leftRT[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             rightRT[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
+            leftRT_Nat[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR); 
+            rightRT_Nat[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             leftRTGI[i]  = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             rightRTGI[i] = new RenderTexture(w, h, 24, RenderTextureFormat.DefaultHDR);
             leftRT[i].Create();
@@ -73,6 +79,7 @@ public class StereoController : MonoBehaviour
             leftRTGI[i].Create();
             rightRTGI[i].Create();
             frozenTextures[i] = new Texture2D(w, h, TextureFormat.RGBAHalf, false);
+            frozenTexturesNat[i] = new Texture2D(w, h, TextureFormat.RGBAHalf, false);
         }
         CreateLegendTexture();
         Cursor.visible = false;
@@ -134,6 +141,16 @@ public class StereoController : MonoBehaviour
 
         if (pathTracing != null) pathTracing.enable.value = true;
 
+        if (artificialLightsParent != null) artificialLightsParent.SetActive(false); // lumière naturelle seulement
+        // oeil gauche
+        StereolabInstance.ForceEye(true);
+        yield return AccumulateInto(leftRT_Nat);
+
+        // oeil droit
+        StereolabInstance.ForceEye(false);
+        yield return AccumulateInto(rightRT_Nat);
+
+        if (artificialLightsParent != null) artificialLightsParent.SetActive(true); // lumière naturelle + artificielle
         // oeil gauche
         StereolabInstance.ForceEye(true);
         yield return AccumulateInto(leftRT);
@@ -152,6 +169,10 @@ public class StereoController : MonoBehaviour
             RenderTexture.active = leftRT[i];
             frozenTextures[i].ReadPixels(new Rect(0, 0, leftRT[i].width, leftRT[i].height), 0, 0);
             frozenTextures[i].Apply();
+
+            RenderTexture.active = leftRT_Nat[i];
+            frozenTexturesNat[i].ReadPixels(new Rect(0, 0, leftRT_Nat[i].width, leftRT_Nat[i].height), 0, 0);
+            frozenTexturesNat[i].Apply();
         }
         RenderTexture.active = null;
         capturing = false;
@@ -309,11 +330,11 @@ public class StereoController : MonoBehaviour
     Color GetHeatmapColor(float t)
     {
         t = Mathf.Clamp01(t);
-        Color c0 = Color.blue;
-        Color c1 = Color.cyan;
-        Color c2 = Color.green;
-        Color c3 = Color.yellow;
-        Color c4 = Color.red;
+        Color c0 = new Color(0.0f, 0.0f, 0.0f);
+        Color c1 = new Color(0.34f, 0.06f, 0.43f);
+        Color c2 = new Color(0.87f, 0.32f, 0.23f);
+        Color c3 = new Color(0.96f, 0.68f, 0.16f);
+        Color c4 = new Color(0.99f, 0.99f, 0.75f);
 
         if (t < 0.25f) return Color.Lerp(c0, c1, t / 0.25f);
         if (t < 0.50f) return Color.Lerp(c1, c2, (t - 0.25f) / 0.25f);
@@ -327,6 +348,8 @@ public class StereoController : MonoBehaviour
         {
             if (leftRT[i]) leftRT[i].Release();
             if (rightRT[i]) rightRT[i].Release();
+            if (leftRT_Nat[i]) leftRT_Nat[i].Release();
+            if (rightRT_Nat[i]) rightRT_Nat[i].Release();
             if (leftRTGI[i]) leftRTGI[i].Release();
             if (rightRTGI[i]) rightRTGI[i].Release();
             if (heatmapLeftRTs[i]) heatmapLeftRTs[i].Release();
