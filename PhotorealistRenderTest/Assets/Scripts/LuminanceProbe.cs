@@ -76,6 +76,7 @@ public class LuminanceProbe : MonoBehaviour
 
     void OnGUI()
     {
+        GUI.depth = -10; 
         if (hasClicked && stereoController != null && !stereoController.cameras[0].enabled) 
         {
             GUI.color = Color.yellow;
