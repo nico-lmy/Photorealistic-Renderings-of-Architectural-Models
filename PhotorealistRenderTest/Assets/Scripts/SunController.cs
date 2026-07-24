@@ -32,24 +32,40 @@ public class SunController : MonoBehaviour
 
     private HDAdditionalLightData hdLight;
 
-    void Start()
-    {
-        if (pvgisManager != null) pvgisManager.FetchData(latitude, longitude);
-        if (globalVolume != null && globalVolume.profile != null) globalVolume.profile.TryGet(out physicallyBasedSky);
-        if (directionalLight != null) hdLight = directionalLight.GetComponent<HDAdditionalLightData>();
-    }
-
     // save des dernières data modifiées
     private float lastHour, lastLat, lastLon, lastTimeZone;
     private int lastMonth, lastDay;
 
+    void Start()
+    {
+        if (pvgisManager != null) 
+        {
+            pvgisManager.FetchData(latitude, longitude);
+            pvgisManager.OnDataReceived += UpdateSun;
+        }
+        if (globalVolume != null && globalVolume.profile != null) globalVolume.profile.TryGet(out physicallyBasedSky);
+        if (directionalLight != null) hdLight = directionalLight.GetComponent<HDAdditionalLightData>();
+    }
+
+    
+    [ContextMenu("Load New Position")]
+    public void LoadNewPosition()
+    {
+        if (pvgisManager != null) 
+        {
+            pvgisManager.FetchData(latitude, longitude);
+            lastLat = latitude;
+            lastLon = longitude;
+        }
+    }
+
     void Update()
     {
-        if (Mathf.Approximately(hour, lastHour) && Mathf.Approximately(latitude, lastLat) &&  Mathf.Approximately(longitude, lastLon) 
-        && Mathf.Approximately(timeZone, lastTimeZone) && month == lastMonth && dayOfMonth == lastDay) return;
+        if (Mathf.Approximately(hour, lastHour) && Mathf.Approximately(timeZone, lastTimeZone) 
+            && month == lastMonth && dayOfMonth == lastDay) return;
 
-        lastHour = hour; lastLat = latitude; lastLon = longitude;
-        lastTimeZone = timeZone; lastMonth = month; lastDay = dayOfMonth;
+        lastHour = hour; lastTimeZone = timeZone; 
+        lastMonth = month; lastDay = dayOfMonth;
         UpdateSun();
     }
 
@@ -133,6 +149,11 @@ public class SunController : MonoBehaviour
             }
         }
 
+    }
+
+    void OnDestroy()
+    {
+        if (pvgisManager != null) pvgisManager.OnDataReceived -= UpdateSun;
     }
 
 }

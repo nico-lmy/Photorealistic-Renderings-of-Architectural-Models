@@ -6,6 +6,7 @@ using System.Globalization;
 public class PVGISManager : MonoBehaviour
 {
     public PVGISResponse pvgisData;
+    public event System.Action OnDataReceived;
 
     public void FetchData(float lat, float lon)
     {
@@ -43,6 +44,7 @@ public class PVGISManager : MonoBehaviour
                                             .Replace("Gd(h)", "Gdh");
                     pvgisData = JsonUtility.FromJson<PVGISResponse>(cleanJson);
                     Debug.Log("Received all the data from TMY JSON table !\n");
+                    OnDataReceived?.Invoke();
                     break;
             }
         }
