@@ -55,6 +55,7 @@ public class SimpleLuminanceProbe : MonoBehaviour
 
     void OnGUI()
     {
+        GUI.depth = -10;
         if (hasClicked && simpleController != null && !simpleController.mainCamera.enabled) 
         {
             GUI.color = Color.yellow;

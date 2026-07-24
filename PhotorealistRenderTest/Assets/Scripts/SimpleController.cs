@@ -170,7 +170,6 @@ public class SimpleController : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.depth = 10;
         if (frozen && Event.current.type == EventType.Repaint)
         {
             RenderTexture src = null;
