@@ -15,21 +15,16 @@ public class PlayerController : MonoBehaviour
     private float rotationX = 0f;
     private Vector3 velocity;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        if (controller == null) controller = GetComponent<CharacterController>(); 
+        if (controller == null) controller = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Mouse.current == null || Keyboard.current == null) return;
 
-        var kb = Keyboard.current; var mouse = Mouse.current; 
-        if (kb.escapeKey.wasPressedThisFrame) Cursor.lockState = CursorLockMode.None;
-        if (mouse.leftButton.wasPressedThisFrame) Cursor.lockState = CursorLockMode.Locked;
+        var kb = Keyboard.current; var mouse = Mouse.current;
 
         if (Cursor.lockState == CursorLockMode.Locked)
         {
@@ -46,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
         if (kb.wKey.isPressed || kb.upArrowKey.isPressed) moveForward += 1f;
         if (kb.sKey.isPressed || kb.downArrowKey.isPressed) moveForward -= 1f;
-
         if (kb.aKey.isPressed || kb.qKey.isPressed || kb.leftArrowKey.isPressed) moveRight -= 1f;
         if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) moveRight += 1f;
 
