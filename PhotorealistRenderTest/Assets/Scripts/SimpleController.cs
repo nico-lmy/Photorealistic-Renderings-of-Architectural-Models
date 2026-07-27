@@ -36,6 +36,7 @@ public class SimpleController : MonoBehaviour
     [HideInInspector] public Texture2D frozenTextureNat;
     
     private bool frozen = false;
+    public bool isFrozen => frozen;
     private bool capturing = false;
     private bool useFinalPT = false;
     private bool showHeatmap = false;

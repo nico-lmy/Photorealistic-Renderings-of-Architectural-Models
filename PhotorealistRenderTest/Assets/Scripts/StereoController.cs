@@ -41,6 +41,7 @@ public class StereoController : MonoBehaviour
     [HideInInspector] public Texture2D[] frozenTextures = new Texture2D[3];
     [HideInInspector] public Texture2D[] frozenTexturesNat = new Texture2D[3];
     private bool frozen = false;
+    public bool isFrozen => frozen;
     private bool capturing = false;
     private bool useFinalPT = false;
     private bool showHeatmap = false;
