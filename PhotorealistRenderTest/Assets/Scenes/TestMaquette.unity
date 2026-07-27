@@ -1661,7 +1661,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 7957.747
+  m_Intensity: 636619.75
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -3356,12 +3356,12 @@ MonoBehaviour:
   pvgisManager: {fileID: 1739693969}
   directionalLight: {fileID: 1536978450}
   globalVolume: {fileID: 349655183}
-  latitude: 48
-  longitude: 7
+  latitude: 25
+  longitude: 25
   timeZone: 2
-  month: 7
-  dayOfMonth: 23
-  hour: 12
+  month: 6
+  dayOfMonth: 24
+  hour: 10.7
 --- !u!1 &1597096495 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
@@ -3573,7 +3573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LuminanceAnalyzer
   heatmapShader: {fileID: 7200000, guid: 78c224d1b42520b44ab54ec7621bf905, type: 3}
   exposureValue: 12
-  maxLuminance: 500
+  maxLuminance: 2500
   minLuminance: 0
 --- !u!1 &1657764011
 GameObject:
