@@ -22,6 +22,6 @@ ScriptedImporter:
     SpotAngle: 120
     iesSize: 128
     ApplyLightAttenuation: 1
-    UseIESMaximumIntensity: 1
+    UseIESMaximumIntensity: 0
     CookieCompression: 2
     LightAimAxisRotation: -90
