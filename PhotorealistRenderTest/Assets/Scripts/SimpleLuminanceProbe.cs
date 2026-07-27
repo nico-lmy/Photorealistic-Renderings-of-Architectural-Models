@@ -14,6 +14,20 @@ public class SimpleLuminanceProbe : MonoBehaviour
     private float naturalLuminance = 0f;
     private float artificialLuminance = 0f;
     private float ratio = 0f;
+    private Texture2D backgroundTex;
+
+    void Awake()
+    {
+        backgroundTex = MakeTex(new Color(0f, 0f, 0f, 0.6f));
+    }
+
+    Texture2D MakeTex(Color color)
+    {
+        Texture2D tex = new Texture2D(1, 1);
+        tex.SetPixel(0, 0, color);
+        tex.Apply();
+        return tex;
+    }
 
     void Update()
     {
@@ -58,14 +72,17 @@ public class SimpleLuminanceProbe : MonoBehaviour
         GUI.depth = -20;
         if (hasClicked && simpleController != null && !simpleController.mainCamera.enabled) 
         {
-            GUI.color = Color.yellow;
             GUI.skin.label.fontSize = 24;
             string info = $"Total Luminance : {totalLuminance:0.0} cd/m²\n" +
                           $"Natural Luminance : {naturalLuminance:0.0} cd/m²\n" +
                           $"Artificial Luminance : {artificialLuminance:0.0} cd/m²\n" +
                           $"Natural-to-Total Ratio : {ratio:0.0} %";
 
-            GUI.Label(new Rect(50, 50, 600, 300), info);
+            Rect infoRect = new Rect(50, 50, 450, 130);
+            GUI.color = Color.white;
+            GUI.DrawTexture(infoRect, backgroundTex);
+            GUI.color = Color.yellow;
+            GUI.Label(new Rect(infoRect.x + 15, infoRect.y + 10, infoRect.width - 30, infoRect.height - 20), info);
 
             GUI.color = Color.red;
             float size = 20f;
