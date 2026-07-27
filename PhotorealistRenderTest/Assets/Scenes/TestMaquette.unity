@@ -2095,6 +2095,61 @@ Light:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &1181807591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1181807593}
+  - component: {fileID: 1181807592}
+  m_Layer: 0
+  m_Name: UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1181807592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181807591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5fe39caf288ad046ae1794345b5a0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuntimeUIController
+  sunController: {fileID: 1536978453}
+  luminanceAnalyzer: {fileID: 1493643097}
+  playerController: {fileID: 1493643096}
+  simpleController: {fileID: 7962628262781814286}
+  stereoController: {fileID: 1673248319}
+  stereolabRoot: {fileID: 1431230027}
+  simpleCamRoot: {fileID: 6431205200322379909}
+  toggleKey: 9
+  burgerSize: 50
+  panelWidth: 320
+  panelHeight: 450
+--- !u!4 &1181807593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181807591}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.74471, y: 0.48492, z: 3.69431}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1269013031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3115,6 +3170,7 @@ GameObject:
   - component: {fileID: 1493643095}
   - component: {fileID: 1493643094}
   - component: {fileID: 1493643096}
+  - component: {fileID: 1493643097}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3181,6 +3237,22 @@ MonoBehaviour:
   speed: 1.8
   mouseSensitivity: 0.2
   gravity: -9.81
+--- !u!114 &1493643097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493643093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de62104a472bf074086136a80a8198c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuminanceAnalyzer
+  heatmapShader: {fileID: 7200000, guid: 78c224d1b42520b44ab54ec7621bf905, type: 3}
+  exposureValue: 12
+  maxLuminance: 2500
+  minLuminance: 0
 --- !u!1 &1501805579
 GameObject:
   m_ObjectHideFlags: 1
@@ -3354,6 +3426,7 @@ GameObject:
   - component: {fileID: 1536978450}
   - component: {fileID: 1536978452}
   - component: {fileID: 1536978453}
+  - component: {fileID: 1536978454}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -3595,7 +3668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3548e5c788fc134f95d20224774777c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SunController
-  pvgisManager: {fileID: 1739693969}
+  pvgisManager: {fileID: 1536978454}
   directionalLight: {fileID: 1536978450}
   globalVolume: {fileID: 349655183}
   latitude: 25
@@ -3604,6 +3677,21 @@ MonoBehaviour:
   month: 6
   dayOfMonth: 24
   hour: 10.7
+--- !u!114 &1536978454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536978449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339fa898f135abc4fb1b2c5c049b4ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PVGISManager
+  pvgisData:
+    outputs:
+      tmy_hourly: []
 --- !u!1 &1597096495 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
@@ -3720,103 +3808,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604516357}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1616384859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1616384861}
-  - component: {fileID: 1616384860}
-  - component: {fileID: 1616384862}
-  - component: {fileID: 1616384863}
-  m_Layer: 0
-  m_Name: Stereo Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1616384860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616384859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030991bc60db4cd4a81740791d255c9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StereoController
-  cameras:
-  - {fileID: 1763885749}
-  - {fileID: 11870664}
-  - {fileID: 600654385}
-  volume: {fileID: 349655183}
-  maxSamples: 64
-  safetyMargin: 8
-  trackedTransform: {fileID: 1673248315}
-  movementThreshold: 0.02
-  rotationThreshold: 0.05
-  captureKey: 32
-  forceUnfreezeKey: 8
-  captureButton: 
-  luminanceAnalyzer: {fileID: 1616384863}
-  artificialLightsParent: {fileID: 107912936}
-  frozenTextures:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  frozenTexturesNat:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
---- !u!4 &1616384861
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616384859}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.48984, y: 1.16845, z: -4.54169}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1616384862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616384859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2ce90fb8ee9bd4db00cdbcc9c3bdc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FPSDisplay
---- !u!114 &1616384863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616384859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de62104a472bf074086136a80a8198c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LuminanceAnalyzer
-  heatmapShader: {fileID: 7200000, guid: 78c224d1b42520b44ab54ec7621bf905, type: 3}
-  exposureValue: 12
-  maxLuminance: 2500
-  minLuminance: 0
 --- !u!1 &1657764011
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,55 +3904,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56efa8925860ba45b63b85fc967ffab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LuminanceProbe
-  stereoController: {fileID: 1616384860}
+  stereoController: {fileID: 1673248319}
   calibrationFactor: 4000
---- !u!1 &1739693966
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1739693968}
-  - component: {fileID: 1739693969}
-  m_Layer: 0
-  m_Name: PVGIS Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1739693968
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739693966}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.48078, y: -0.246, z: 13.11685}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1739693969
+--- !u!114 &1673248319
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739693966}
+  m_GameObject: {fileID: 1431230027}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 339fa898f135abc4fb1b2c5c049b4ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: 030991bc60db4cd4a81740791d255c9a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PVGISManager
-  pvgisData:
-    outputs:
-      tmy_hourly: []
+  m_EditorClassIdentifier: Assembly-CSharp::StereoController
+  cameras:
+  - {fileID: 1763885749}
+  - {fileID: 11870664}
+  - {fileID: 600654385}
+  volume: {fileID: 349655183}
+  maxSamples: 64
+  safetyMargin: 8
+  trackedTransform: {fileID: 1673248315}
+  movementThreshold: 0.02
+  rotationThreshold: 0.05
+  captureKey: 32
+  forceUnfreezeKey: 8
+  captureButton: 
+  luminanceAnalyzer: {fileID: 1493643097}
+  artificialLightsParent: {fileID: 107912936}
+  frozenTextures:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  frozenTexturesNat:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1759386116
 GameObject:
   m_ObjectHideFlags: 0
@@ -4376,6 +4355,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4584716356444136080, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1673248317}
+    - targetCorrespondingSourceObject: {fileID: 4584716356444136080, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1673248319}
     - targetCorrespondingSourceObject: {fileID: 8920865525033967819, guid: 26213be5fea66ca4fb4a45a2967f9d4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763885747}
@@ -5594,7 +5576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &6732743079814037932
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5945,7 +5927,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6431205200322379909}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5915901b8060e88469d7dba6f34a67e4, type: 3}
   m_Name: 
@@ -5957,7 +5939,7 @@ MonoBehaviour:
   trackedTransform: {fileID: 7962628262781814285}
   captureKey: 32
   forceUnfreezeKey: 8
-  luminanceAnalyzer: {fileID: 1616384863}
+  luminanceAnalyzer: {fileID: 1493643097}
   artificialLightsParent: {fileID: 107912936}
   frozenTexture: {fileID: 0}
   frozenTextureNat: {fileID: 0}
@@ -6118,10 +6100,9 @@ SceneRoots:
   - {fileID: 543450651704701726}
   - {fileID: 1457160165}
   - {fileID: 1493643095}
-  - {fileID: 1739693968}
-  - {fileID: 1616384861}
   - {fileID: 1452192765}
   - {fileID: 1271793631}
   - {fileID: 1501805581}
   - {fileID: 1657764014}
   - {fileID: 849247013}
+  - {fileID: 1181807593}
