@@ -17,13 +17,20 @@ public class RuntimeUIController : MonoBehaviour
     public GameObject stereolabRoot;
     public GameObject simpleCamRoot;
 
+    [Header("Luminaires")]
+    public LuminairePlacementController placementController;
+    public PlacedLuminaireRegistry placedLuminaireRegistry;
+
     [Header("UI Settings")]
     public KeyCode toggleKey = KeyCode.Tab;
     public float burgerSize = 60f;
     public float panelWidth = 450f;
     public float panelHeight = 700f;
 
+    private enum PanelTab { Settings, Luminaires }
+    private PanelTab currentTab = PanelTab.Settings;
     private bool panelOpen = false;
+    public bool IsPanelOpen => panelOpen;
     private int activePanelCamIndex = -1;
     private DisplayMode mode = DisplayMode.NotChosen;
     private GUIStyle burgerStyle;
@@ -31,6 +38,8 @@ public class RuntimeUIController : MonoBehaviour
     private GUIStyle labelStyle;
     private GUIStyle titleStyle;
     private GUIStyle bigButtonStyle;
+    private GUIStyle tabButtonStyle;
+    private GUIStyle tabButtonActiveStyle;
 
     private System.Collections.Generic.Dictionary<string, string> textFieldBuffers = new System.Collections.Generic.Dictionary<string, string>();
 
@@ -116,6 +125,11 @@ public class RuntimeUIController : MonoBehaviour
             fontSize = 22,
             fixedHeight = 60
         };
+
+        tabButtonStyle = new GUIStyle(GUI.skin.button) { fontSize = 16, fixedHeight = 35 };
+        tabButtonActiveStyle = new GUIStyle(tabButtonStyle);
+        tabButtonActiveStyle.normal.textColor = Color.yellow;
+        tabButtonActiveStyle.fontStyle = FontStyle.Bold;
     }
 
     void OnGUI()
@@ -166,7 +180,7 @@ public class RuntimeUIController : MonoBehaviour
 
         if (panelOpen && activePanelCamIndex == camIndex)
         {
-            float estimatedHeight = 500f;
+            float estimatedHeight = 550f;
 
             float panelY = burgerY - estimatedHeight - 10f;
             panelY = Mathf.Max(panelY, camRect.y + 10f);
@@ -215,6 +229,20 @@ public class RuntimeUIController : MonoBehaviour
 
     void DrawPanelContent()
     {
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Settings", currentTab == PanelTab.Settings ? tabButtonActiveStyle : tabButtonStyle))
+            currentTab = PanelTab.Settings;
+        if (GUILayout.Button("Lights", currentTab == PanelTab.Luminaires ? tabButtonActiveStyle : tabButtonStyle))
+            currentTab = PanelTab.Luminaires;
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
+
+        if (currentTab == PanelTab.Settings) DrawSettingsTab();
+        else DrawLuminairesTab();
+    }
+
+    void DrawSettingsTab()
+    {
         GUILayout.Label("Settings", titleStyle);
         GUILayout.Space(10);
 
@@ -238,6 +266,64 @@ public class RuntimeUIController : MonoBehaviour
             luminanceAnalyzer.maxLuminance = GUILayout.HorizontalSlider(luminanceAnalyzer.maxLuminance, 100f, 20000f);
             GUILayout.Label($"Min Luminance : {luminanceAnalyzer.minLuminance:0} cd/m²", labelStyle);
             luminanceAnalyzer.minLuminance = GUILayout.HorizontalSlider(luminanceAnalyzer.minLuminance, 0f, 5000f);
+        }
+    }
+
+    void DrawLuminairesTab()
+    {
+        GUILayout.Label("Add a light", titleStyle);
+        GUILayout.Space(10);
+
+        if (placementController == null || placementController.catalog == null)
+        {
+            GUILayout.Label("No catalog assigned.", labelStyle);
+            return;
+        }
+
+        bool isPlacing = placementController.IsPlacing;
+
+        foreach (var profile in placementController.catalog.luminaires)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(profile.luminaireName, labelStyle, GUILayout.Width(120));
+            GUILayout.FlexibleSpace();
+
+            bool isCurrentSelection = isPlacing && placementController.CurrentProfile == profile;
+            string btnLabel = isCurrentSelection ? "Placing... (Esc to cancel)" : "Place";
+
+            if (GUILayout.Button(btnLabel, GUILayout.Width(60)))
+            {
+                if (isCurrentSelection) placementController.CancelPlacementPublic();
+                else placementController.StartPlacement(profile);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5);
+        }
+
+        GUILayout.Space(20);
+        GUILayout.Label("Placed lights", titleStyle);
+        GUILayout.Space(10);
+
+        if (placedLuminaireRegistry == null)
+        {
+            GUILayout.Label("No registry assigned.", labelStyle);
+            return;
+        }
+
+        var placed = placedLuminaireRegistry.GetAll();
+        if (placed.Count == 0) GUILayout.Label("None placed yet.", labelStyle);
+        else
+        {
+            var snapshot = new System.Collections.Generic.List<GameObject>(placed);
+            foreach (var go in snapshot)
+            {
+                if (go == null) continue;
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(go.name, labelStyle, GUILayout.Width(120));
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Delete", GUILayout.Width(60))) placedLuminaireRegistry.RemoveSpecific(go);
+                GUILayout.EndHorizontal();
+            }
         }
     }
 
@@ -304,4 +390,12 @@ public class RuntimeUIController : MonoBehaviour
 
         return value;
     }
+
+    public void ClosePanel()
+    {
+        panelOpen = false;
+        activePanelCamIndex = -1;
+        ApplyCursorState();
+    }
+
 }
