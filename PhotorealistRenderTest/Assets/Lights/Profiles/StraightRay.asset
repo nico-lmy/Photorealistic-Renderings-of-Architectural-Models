@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
   m_Name: StraightRay
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Lamp
+  luminaireName: Straight Ray
   lightPrefab: {fileID: 1030173301288482324, guid: ad2ef9e942c30c74e8eb03f569a32003, type: 3}
   thumbnail: {fileID: 0}
   description: 

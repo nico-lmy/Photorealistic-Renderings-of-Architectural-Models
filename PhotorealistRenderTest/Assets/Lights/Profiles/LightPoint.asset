@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
   m_Name: LightPoint
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Lamp
+  luminaireName: Light Point
   lightPrefab: {fileID: 4474950888192628773, guid: c9a7896fe33d1a34384585ce98da6a71, type: 3}
   thumbnail: {fileID: 0}
   description: 

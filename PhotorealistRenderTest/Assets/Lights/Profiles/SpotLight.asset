@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
   m_Name: SpotLight
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Lamp
+  luminaireName: Spot Light
   lightPrefab: {fileID: 2980238211797832869, guid: 4394942f3dc57474c81a66fc2225d0cd, type: 3}
   thumbnail: {fileID: 0}
   description: 
