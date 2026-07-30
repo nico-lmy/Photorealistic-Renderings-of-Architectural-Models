@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
-  m_Name: LightPoint
+  m_Name: Downlight
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Light Point
-  lightPrefab: {fileID: -5123094533064181916, guid: 16440ed3b4084ba48aa7db7162c6e20c, type: 3}
-  thumbnail: {fileID: 2800000, guid: c95c5a297e6a045479d70fa618c6b6a4, type: 3}
+  luminaireName: Downlight
+  lightPrefab: {fileID: 6788784321761765750, guid: c2a6d6b012e6bfb4a852ce21ac9a8afe, type: 3}
+  thumbnail: {fileID: 2800000, guid: 2097aff5315c47c47ab9156eee4413b9, type: 3}
   description: 

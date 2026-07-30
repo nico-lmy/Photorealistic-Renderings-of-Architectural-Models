@@ -6,6 +6,6 @@ public class LuminaireProfile : ScriptableObject
 {
     public string luminaireName = "Light";
     public GameObject lightPrefab;
-    public Sprite thumbnail;
+    public Texture2D thumbnail;
     [TextArea] public string description;
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61fcf2f85621c4c4a908a20863f2c247
+guid: 5ab6058cd2d8dcb4e8c355819191fefb
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -9,19 +9,19 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 9801397f829a1ed42984340315cbf362, type: 3}
   iesMetaData:
-    FileFormatVersion: LM-63-1995
+    FileFormatVersion: LM-63-1991
     IESPhotometricType: Type C
-    IESMaximumIntensity: 262637.3
+    IESMaximumIntensity: 3659.3
     IESMaximumIntensityUnit: Candelas
-    Manufacturer: BEGA Copyright LUMCat V
+    Manufacturer: BEGA
     LuminaireCatalogNumber: 
-    LuminaireDescription: 84664K3 + 71109
-    LampCatalogNumber: LED  129,6W
-    LampDescription: 10082 lm,140 W
+    LuminaireDescription: 50805K3
+    LampCatalogNumber: LED  74,4W
+    LampDescription: 7642 lm,83 W
     PrefabLightType: 0
     SpotAngle: 120
     iesSize: 128
     ApplyLightAttenuation: 1
-    UseIESMaximumIntensity: 0
+    UseIESMaximumIntensity: 1
     CookieCompression: 2
     LightAimAxisRotation: -90

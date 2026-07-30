@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61fcf2f85621c4c4a908a20863f2c247
+guid: 2b2b3e1b5defd2144b19c71c6e757234
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -9,19 +9,19 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 9801397f829a1ed42984340315cbf362, type: 3}
   iesMetaData:
-    FileFormatVersion: LM-63-1995
+    FileFormatVersion: LM-63-2002
     IESPhotometricType: Type C
-    IESMaximumIntensity: 262637.3
-    IESMaximumIntensityUnit: Candelas
-    Manufacturer: BEGA Copyright LUMCat V
-    LuminaireCatalogNumber: 
-    LuminaireDescription: 84664K3 + 71109
-    LampCatalogNumber: LED  129,6W
-    LampDescription: 10082 lm,140 W
+    IESMaximumIntensity: 320
+    IESMaximumIntensityUnit: Lumens
+    Manufacturer: ERCO GmbH
+    LuminaireCatalogNumber: 33817000
+    LuminaireDescription: Nadir Recessed floor luminaire
+    LampCatalogNumber: 
+    LampDescription: "\0\0\0\0c\0\0\0\0\0\0\uCE3F\0\0\x1F\x02"
     PrefabLightType: 0
     SpotAngle: 120
     iesSize: 128
     ApplyLightAttenuation: 1
-    UseIESMaximumIntensity: 0
+    UseIESMaximumIntensity: 1
     CookieCompression: 2
     LightAimAxisRotation: -90

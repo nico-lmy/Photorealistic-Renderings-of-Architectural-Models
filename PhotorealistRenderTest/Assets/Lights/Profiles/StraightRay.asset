@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: StraightRay
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
   luminaireName: Straight Ray
-  lightPrefab: {fileID: 1030173301288482324, guid: ad2ef9e942c30c74e8eb03f569a32003, type: 3}
-  thumbnail: {fileID: 0}
+  lightPrefab: {fileID: 1139862533358340664, guid: 61fcf2f85621c4c4a908a20863f2c247, type: 3}
+  thumbnail: {fileID: 2800000, guid: 30b9d3095978a9d4bbcf41757ea5c2e2, type: 3}
   description: 

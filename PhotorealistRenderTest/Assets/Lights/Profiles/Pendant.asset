@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
-  m_Name: LightPoint
+  m_Name: Pendant
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Light Point
-  lightPrefab: {fileID: -5123094533064181916, guid: 16440ed3b4084ba48aa7db7162c6e20c, type: 3}
-  thumbnail: {fileID: 2800000, guid: c95c5a297e6a045479d70fa618c6b6a4, type: 3}
+  luminaireName: Pendant
+  lightPrefab: {fileID: -2738169644201903791, guid: 5ab6058cd2d8dcb4e8c355819191fefb, type: 3}
+  thumbnail: {fileID: 2800000, guid: 8252e32bb5185c746b7ebe80f0f31a40, type: 3}
   description: 

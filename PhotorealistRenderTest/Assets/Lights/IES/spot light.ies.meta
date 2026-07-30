@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61fcf2f85621c4c4a908a20863f2c247
+guid: d473cff541876e2489c3b68625bcbe3a
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -11,13 +11,13 @@ ScriptedImporter:
   iesMetaData:
     FileFormatVersion: LM-63-1995
     IESPhotometricType: Type C
-    IESMaximumIntensity: 262637.3
+    IESMaximumIntensity: 220.2
     IESMaximumIntensityUnit: Candelas
     Manufacturer: BEGA Copyright LUMCat V
     LuminaireCatalogNumber: 
-    LuminaireDescription: 84664K3 + 71109
-    LampCatalogNumber: LED  129,6W
-    LampDescription: 10082 lm,140 W
+    LuminaireDescription: 50877K3
+    LampCatalogNumber: LED  11,5W
+    LampDescription: 973 lm,14 W
     PrefabLightType: 0
     SpotAngle: 120
     iesSize: 128

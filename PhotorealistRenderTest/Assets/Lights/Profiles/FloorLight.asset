@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
-  m_Name: LightPoint
+  m_Name: FloorLight
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Light Point
-  lightPrefab: {fileID: -5123094533064181916, guid: 16440ed3b4084ba48aa7db7162c6e20c, type: 3}
-  thumbnail: {fileID: 2800000, guid: c95c5a297e6a045479d70fa618c6b6a4, type: 3}
+  luminaireName: Floor Light
+  lightPrefab: {fileID: -732705056263931569, guid: 2b2b3e1b5defd2144b19c71c6e757234, type: 3}
+  thumbnail: {fileID: 2800000, guid: f62082c249c1a5743a161b29ea3cee11, type: 3}
   description: 

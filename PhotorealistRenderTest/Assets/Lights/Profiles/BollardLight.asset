@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd672b32c022e39449a716bbc7205f58, type: 3}
-  m_Name: LightPoint
+  m_Name: BollardLight
   m_EditorClassIdentifier: Assembly-CSharp::LuminaireProfile
-  luminaireName: Light Point
-  lightPrefab: {fileID: -5123094533064181916, guid: 16440ed3b4084ba48aa7db7162c6e20c, type: 3}
-  thumbnail: {fileID: 2800000, guid: c95c5a297e6a045479d70fa618c6b6a4, type: 3}
+  luminaireName: Bollard Light
+  lightPrefab: {fileID: -8179307614478837956, guid: f8a8c7ccbbb374346b429b1c97c2e3e4, type: 3}
+  thumbnail: {fileID: 2800000, guid: 73a7558bfd40fcb42b229d9c78b47bc1, type: 3}
   description: 
