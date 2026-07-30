@@ -12,6 +12,7 @@ public class LuminairePlacementController : MonoBehaviour
     [Header("Preview marker")]
     public GameObject previewMarkerPrefab;
     private GameObject markerInstance;
+    public float surfaceOffset = 0.05f;
 
     [Header("UI reference")]
     public RuntimeUIController uiController;
@@ -64,7 +65,7 @@ public class LuminairePlacementController : MonoBehaviour
                     markerInstance.transform.localPosition = Vector3.zero;
                 }
             }
-            previewInstance.transform.position = hit.point;
+            previewInstance.transform.position = hit.point + hit.normal * surfaceOffset;
             previewInstance.transform.rotation = Quaternion.LookRotation(hit.normal);
         }
 
