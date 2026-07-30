@@ -28,6 +28,8 @@ public class RuntimeUIController : MonoBehaviour
     public float panelHeight = 700f;
 
     private enum PanelTab { Settings, Luminaires }
+    private System.Collections.Generic.HashSet<string> expandedThumbnails = new System.Collections.Generic.HashSet<string>();
+    private Vector2 luminairesScrollPos;
     private PanelTab currentTab = PanelTab.Settings;
     private bool panelOpen = false;
     public bool IsPanelOpen => panelOpen;
@@ -271,6 +273,9 @@ public class RuntimeUIController : MonoBehaviour
     {
         GUILayout.Label("Add a light", titleStyle);
         GUILayout.Space(10);
+        float scrollHeight = panelHeight - 150f;
+        luminairesScrollPos = GUILayout.BeginScrollView(luminairesScrollPos, GUILayout.Height(scrollHeight));
+
 
         if (placementController == null || placementController.catalog == null)
         {
@@ -284,10 +289,22 @@ public class RuntimeUIController : MonoBehaviour
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label(profile.luminaireName, labelStyle, GUILayout.Width(120));
+
+            bool hasThumbnail = profile.thumbnail != null;
+            GUI.enabled = hasThumbnail;
+            if (GUILayout.Button("View", GUILayout.Width(45), GUILayout.Height(25)))
+            {
+                if (expandedThumbnails.Contains(profile.luminaireName))
+                    expandedThumbnails.Remove(profile.luminaireName);
+                else
+                    expandedThumbnails.Add(profile.luminaireName);
+            }
+            GUI.enabled = true;
+
             GUILayout.FlexibleSpace();
 
             bool isCurrentSelection = isPlacing && placementController.CurrentProfile == profile;
-            string btnLabel = isCurrentSelection ? "Placing... (Esc to cancel)" : "Place";
+            string btnLabel = isCurrentSelection ? "Placing..." : "Place";
 
             if (GUILayout.Button(btnLabel, GUILayout.Width(60)))
             {
@@ -295,6 +312,14 @@ public class RuntimeUIController : MonoBehaviour
                 else placementController.StartPlacement(profile);
             }
             GUILayout.EndHorizontal();
+
+            if (hasThumbnail && expandedThumbnails.Contains(profile.luminaireName))
+            {
+                GUILayout.Space(5);
+                Rect thumbRect = GUILayoutUtility.GetRect(150, 150, GUILayout.ExpandWidth(false));
+                GUI.DrawTexture(thumbRect, profile.thumbnail, ScaleMode.ScaleToFit);
+            }
+
             GUILayout.Space(5);
         }
 
@@ -323,6 +348,7 @@ public class RuntimeUIController : MonoBehaviour
                 GUILayout.EndHorizontal();
             }
         }
+        GUILayout.EndScrollView();
     }
 
     void DrawHourField()
