@@ -180,12 +180,10 @@ public class RuntimeUIController : MonoBehaviour
 
         if (panelOpen && activePanelCamIndex == camIndex)
         {
-            float estimatedHeight = 550f;
-
-            float panelY = burgerY - estimatedHeight - 10f;
+            float panelY = burgerY - panelHeight - 10f;
             panelY = Mathf.Max(panelY, camRect.y + 10f);
 
-            Rect panelRect = new Rect(burgerX, panelY, panelWidth, estimatedHeight);
+            Rect panelRect = new Rect(burgerX, panelY, panelWidth, panelHeight);
             GUILayout.BeginArea(panelRect, panelStyle);
             DrawPanelContent();
             GUILayout.EndArea();
