@@ -32,7 +32,7 @@ public class RuntimeUIController : MonoBehaviour
     private bool panelOpen = false;
     public bool IsPanelOpen => panelOpen;
     private int activePanelCamIndex = -1;
-    private DisplayMode mode = DisplayMode.NotChosen;
+    public DisplayMode mode = DisplayMode.NotChosen;
     private GUIStyle burgerStyle;
     private GUIStyle panelStyle;
     private GUIStyle labelStyle;

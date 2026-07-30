@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     public CharacterController controller;
     public Transform cameraTransform; 
+    public RuntimeUIController uiController;
 
     [Header("Settings")]
     public float speed = 1.2f;
@@ -39,10 +40,20 @@ public class PlayerController : MonoBehaviour
         float moveForward = 0f;
         float moveRight = 0f;
 
-        if (kb.wKey.isPressed || kb.upArrowKey.isPressed) moveForward += 1f;
-        if (kb.sKey.isPressed || kb.downArrowKey.isPressed) moveForward -= 1f;
-        if (kb.aKey.isPressed || kb.qKey.isPressed || kb.leftArrowKey.isPressed) moveRight -= 1f;
-        if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) moveRight += 1f;
+        if (uiController.mode == RuntimeUIController.DisplayMode.Simple)
+        {
+            if (kb.wKey.isPressed || kb.zKey.isPressed || kb.upArrowKey.isPressed) moveRight -= 1f;
+            if (kb.sKey.isPressed || kb.downArrowKey.isPressed) moveRight += 1f;
+            if (kb.aKey.isPressed || kb.qKey.isPressed || kb.leftArrowKey.isPressed) moveForward -= 1f;
+            if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) moveForward += 1f;
+        }
+        else
+        {
+            if (kb.wKey.isPressed || kb.upArrowKey.isPressed) moveForward += 1f;
+            if (kb.sKey.isPressed || kb.downArrowKey.isPressed) moveForward -= 1f;
+            if (kb.aKey.isPressed || kb.qKey.isPressed || kb.leftArrowKey.isPressed) moveRight -= 1f;
+            if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) moveRight += 1f;
+        }
 
         Vector3 move = transform.right * moveRight + transform.forward * moveForward;
         move = Vector3.ClampMagnitude(move, 1f);
