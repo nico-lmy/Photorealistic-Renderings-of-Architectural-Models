@@ -21,6 +21,10 @@ public class RuntimeUIController : MonoBehaviour
     public LuminairePlacementController placementController;
     public PlacedLuminaireRegistry placedLuminaireRegistry;
 
+    [Header("Edit gizmo")]
+    public float gizmoScale = 0.3f;
+    private GameObject editMarkerInstance;
+
     [Header("UI Settings")]
     public KeyCode toggleKey = KeyCode.Tab;
     public float burgerSize = 60f;
@@ -29,6 +33,8 @@ public class RuntimeUIController : MonoBehaviour
 
     private enum PanelTab { Settings, Luminaires }
     private System.Collections.Generic.HashSet<string> expandedThumbnails = new System.Collections.Generic.HashSet<string>();
+    private System.Collections.Generic.Dictionary<int, Vector3> eulerCache = new System.Collections.Generic.Dictionary<int, Vector3>();
+    private System.Collections.Generic.Dictionary<string, float> sliderAnchors = new System.Collections.Generic.Dictionary<string, float>();
     private Vector2 luminairesScrollPos;
     private PanelTab currentTab = PanelTab.Settings;
     private bool panelOpen = false;
@@ -42,6 +48,8 @@ public class RuntimeUIController : MonoBehaviour
     private GUIStyle bigButtonStyle;
     private GUIStyle tabButtonStyle;
     private GUIStyle tabButtonActiveStyle;
+    private GameObject selectedLuminaire = null;
+    private float editPosRange = 2f;
 
     private System.Collections.Generic.Dictionary<string, string> textFieldBuffers = new System.Collections.Generic.Dictionary<string, string>();
 
@@ -76,6 +84,28 @@ public class RuntimeUIController : MonoBehaviour
             panelOpen = false;
             activePanelCamIndex = -1;
             ApplyCursorState();
+        }
+        UpdateEditMarker();
+    }
+
+    void UpdateEditMarker()
+    {
+        if (selectedLuminaire == null)
+        {
+            if (editMarkerInstance != null)
+            {
+                Destroy(editMarkerInstance);
+                editMarkerInstance = null;
+            }
+            return;
+        }
+
+        if (editMarkerInstance != null)
+        {
+            editMarkerInstance.transform.position = selectedLuminaire.transform.position;
+            editMarkerInstance.transform.rotation = selectedLuminaire.transform.rotation;
+            float pulse = 0.75f + 0.25f * Mathf.Sin(Time.unscaledTime * 6f);
+            editMarkerInstance.transform.localScale = Vector3.one * gizmoScale * pulse;
         }
     }
 
@@ -137,6 +167,7 @@ public class RuntimeUIController : MonoBehaviour
     void OnGUI()
     {
         EnsureStyles();
+        if (mode != DisplayMode.NotChosen) DrawEditTarget();
 
         if (mode == DisplayMode.NotChosen)
         {
@@ -280,6 +311,7 @@ public class RuntimeUIController : MonoBehaviour
         if (placementController == null || placementController.catalog == null)
         {
             GUILayout.Label("No catalog assigned.", labelStyle);
+            GUILayout.EndScrollView();
             return;
         }
 
@@ -330,6 +362,7 @@ public class RuntimeUIController : MonoBehaviour
         if (placedLuminaireRegistry == null)
         {
             GUILayout.Label("No registry assigned.", labelStyle);
+            GUILayout.EndScrollView();
             return;
         }
 
@@ -341,14 +374,190 @@ public class RuntimeUIController : MonoBehaviour
             foreach (var go in snapshot)
             {
                 if (go == null) continue;
+                bool isSelected = (selectedLuminaire == go);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(go.name, labelStyle, GUILayout.Width(120));
+                GUILayout.Label(go.name, isSelected ? tabButtonActiveStyle : labelStyle, GUILayout.Width(120));
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Delete", GUILayout.Width(60))) placedLuminaireRegistry.RemoveSpecific(go);
+                if (GUILayout.Button(isSelected ? "Close" : "Edit", GUILayout.Width(55)))
+                    selectedLuminaire = isSelected ? null : go;
+                if (GUILayout.Button("Delete", GUILayout.Width(60))) 
+                {
+                    if (selectedLuminaire == go) selectedLuminaire = null;
+                    ClearEditBuffers(go);
+                    placedLuminaireRegistry.RemoveSpecific(go);
+                }
                 GUILayout.EndHorizontal();
+                if (isSelected)
+                {
+                    GUILayout.Space(5);
+                    DrawLuminaireEditor(go);
+                    GUILayout.Space(10);
+                }
             }
         }
         GUILayout.EndScrollView();
+    }
+
+    void DrawLuminaireEditor(GameObject go)
+    {
+        GUILayout.BeginVertical(GUI.skin.box);
+        string id = go.GetInstanceID().ToString();
+
+        GUILayout.Label("Transform", titleStyle);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Slider range (m) :", labelStyle, GUILayout.Width(150));
+        if (!textFieldBuffers.ContainsKey("posRange"))
+            textFieldBuffers["posRange"] = editPosRange.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        textFieldBuffers["posRange"] = GUILayout.TextField(textFieldBuffers["posRange"], GUILayout.Width(60));
+
+        if (float.TryParse(textFieldBuffers["posRange"], System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture, out float parsedRange))
+            editPosRange = Mathf.Clamp(parsedRange, 0.05f, 100f);
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(4);
+        go.transform.position    = Vector3FieldWithSliders("Position", go.transform.position, id + "_pos", editPosRange, false);
+
+        var light = go.GetComponentInChildren<Light>();
+        if (light == null)
+        {
+            GUILayout.Label("No light found.", labelStyle);
+            GUILayout.EndVertical();
+            return;
+        }
+
+        var hdLight = light.GetComponent<UnityEngine.Rendering.HighDefinition.HDAdditionalLightData>();
+
+        GUILayout.Label("Light", titleStyle);
+
+        float intensity = light.intensity;
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Intensity :", labelStyle, GUILayout.Width(90));
+
+        string keyI = id + "_int";
+        if (!textFieldBuffers.ContainsKey(keyI))
+            textFieldBuffers[keyI] = intensity.ToString("0.##");
+        else
+        {
+            if (float.TryParse(textFieldBuffers[keyI], System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out float bufferedI))
+            {
+                if (Mathf.Abs(bufferedI - intensity) > 0.01f)
+                    textFieldBuffers[keyI] = intensity.ToString("0.##");
+            }
+        }
+
+        string sI = GUILayout.TextField(textFieldBuffers[keyI], GUILayout.Width(80));
+        textFieldBuffers[keyI] = sI;
+
+        if (float.TryParse(sI, System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture, out float parsedI))
+            intensity = Mathf.Max(0f, parsedI);
+
+        if (hdLight != null)
+            GUILayout.Label(light.lightUnit.ToString(), labelStyle, GUILayout.Width(60));
+
+        GUILayout.EndHorizontal();
+
+        float newI = GUILayout.HorizontalSlider(intensity, 0f, 5000f);
+        if (!Mathf.Approximately(newI, intensity))
+        {
+            intensity = newI;
+            textFieldBuffers[keyI] = intensity.ToString("0.##");
+        }
+
+        light.intensity = intensity;
+        GUILayout.BeginHorizontal();
+        light.useColorTemperature = GUILayout.Toggle(light.useColorTemperature, "", GUILayout.Width(20));
+        GUILayout.Label("Use color temperature", labelStyle);
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+
+        if (light.useColorTemperature)
+        {
+            GUILayout.Label($"Color temp : {light.colorTemperature:0} K", labelStyle);
+            light.colorTemperature = GUILayout.HorizontalSlider(light.colorTemperature, 1500f, 10000f);
+        }
+        else
+        {
+            GUILayout.Label("Color (RGB)", labelStyle);
+            Color c = light.color;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("R", labelStyle, GUILayout.Width(15));
+            c.r = GUILayout.HorizontalSlider(c.r, 0f, 1f);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("G", labelStyle, GUILayout.Width(15));
+            c.g = GUILayout.HorizontalSlider(c.g, 0f, 1f);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("B", labelStyle, GUILayout.Width(15));
+            c.b = GUILayout.HorizontalSlider(c.b, 0f, 1f);
+            GUILayout.EndHorizontal();
+            light.color = c;
+        }
+        GUILayout.Label($"Range : {light.range:0.00} m", labelStyle);
+        light.range = GUILayout.HorizontalSlider(light.range, 0.1f, 50f);
+        if (light.type == LightType.Spot)
+        {
+            GUILayout.Label($"Spot angle : {light.spotAngle:0}°", labelStyle);
+            light.spotAngle = GUILayout.HorizontalSlider(light.spotAngle, 1f, 179f);
+        }
+        bool en = light.enabled;
+        Color prevBg = GUI.backgroundColor;
+        GUI.backgroundColor = en ? new Color(0.3f, 0.7f, 0.3f) : new Color(0.7f, 0.3f, 0.3f);
+        if (GUILayout.Button(en ? "ON  (click to disable)" : "OFF  (click to enable)", GUILayout.Height(28)))
+            light.enabled = !en;
+        GUI.backgroundColor = prevBg;
+        GUILayout.EndVertical();
+    }
+
+    void DrawEditTarget()
+    {
+        if (selectedLuminaire == null) return;
+
+        Camera cam = null;
+        if (mode == DisplayMode.Cave && activePanelCamIndex >= 0 && stereoController != null
+            && stereoController.cameras != null && activePanelCamIndex < stereoController.cameras.Length)
+            cam = stereoController.cameras[activePanelCamIndex];
+
+    if (cam == null && simpleCamRoot != null) cam = simpleCamRoot.GetComponentInChildren<Camera>();
+        if (cam == null) cam = Camera.main;
+        if (cam == null) return;
+
+        Vector3 wp = selectedLuminaire.transform.position;
+        Vector3 sp = cam.WorldToScreenPoint(wp);
+
+        bool behind = sp.z < 0f;
+        float gx = sp.x;
+        float gy = Screen.height - sp.y;
+
+        Color prev = GUI.color;
+        GUI.color = new Color(1f, 0.85f, 0.2f, 0.9f);
+
+        if (!behind && gx > 0 && gx < Screen.width && gy > 0 && gy < Screen.height)
+        {
+            float s = 34f;
+            GUI.DrawTexture(new Rect(gx - s * 0.5f, gy - 1f, s, 2f), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(gx - 1f, gy - s * 0.5f, 2f, s), Texture2D.whiteTexture);
+
+            GUIStyle st = new GUIStyle(GUI.skin.label);
+            st.fontSize = 16;
+            st.normal.textColor = new Color(1f, 0.85f, 0.2f);
+            GUI.Label(new Rect(gx + 20f, gy - 10f, 220f, 24f), selectedLuminaire.name, st);
+        }
+        else
+        {
+            float cx = Mathf.Clamp(gx, 30f, Screen.width - 30f);
+            float cy = Mathf.Clamp(gy, 30f, Screen.height - 30f);
+            if (behind) { cx = Screen.width - cx; cy = Screen.height - cy; }
+            GUI.DrawTexture(new Rect(cx - 10f, cy - 10f, 20f, 20f), Texture2D.whiteTexture);
+            GUIStyle st = new GUIStyle(GUI.skin.label);
+            st.fontSize = 14;
+            st.normal.textColor = new Color(1f, 0.85f, 0.2f);
+            GUI.Label(new Rect(cx + 14f, cy - 8f, 200f, 20f), "→ " + selectedLuminaire.name, st);
+        }
+        GUI.color = prev;
     }
 
     void DrawHourField()
@@ -415,11 +624,90 @@ public class RuntimeUIController : MonoBehaviour
         return value;
     }
 
+    Vector3 Vector3FieldWithSliders(string label, Vector3 v, string key, float sliderRange, bool isAngle)
+    {
+        GUILayout.Label(label, labelStyle);
+        v.x = AxisFieldSlider("X", v.x, key + "_x", sliderRange, isAngle);
+        v.y = AxisFieldSlider("Y", v.y, key + "_y", sliderRange, isAngle);
+        v.z = AxisFieldSlider("Z", v.z, key + "_z", sliderRange, isAngle);
+        return v;
+    }
+
+    float AxisFieldSlider(string axis, float value, string key, float sliderRange, bool isAngle)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(axis, labelStyle, GUILayout.Width(18));
+
+        var ci = System.Globalization.CultureInfo.InvariantCulture;
+
+        if (!textFieldBuffers.ContainsKey(key))
+            textFieldBuffers[key] = value.ToString("0.###", ci);
+
+        string before = textFieldBuffers[key];
+        string after = GUILayout.TextField(before, GUILayout.Width(70));
+        textFieldBuffers[key] = after;
+
+        bool typed = (after != before);
+
+        if (float.TryParse(after, System.Globalization.NumberStyles.Float, ci, out float parsed))
+            value = parsed;
+
+        if (!sliderAnchors.ContainsKey(key) || typed)
+            sliderAnchors[key] = value;
+
+        float anchor = sliderAnchors[key];
+
+        float min, max;
+        if (isAngle)
+        {
+            min = 0f;
+            max = 360f;
+        }
+        else
+        {
+            float r = sliderRange > 0f ? sliderRange : 1f;
+            min = anchor - r;
+            max = anchor + r;
+        }
+
+        float shown = Mathf.Clamp(value, min, max);
+        float newVal = GUILayout.HorizontalSlider(shown, min, max);
+
+        if (!Mathf.Approximately(newVal, shown))
+        {
+            value = newVal;
+            textFieldBuffers[key] = value.ToString("0.###", ci);
+        }
+
+        GUILayout.EndHorizontal();
+        return value;
+    }
+
+    void ClearEditBuffers(GameObject go)
+    {
+        if (go == null) return;
+        int goId = go.GetInstanceID();
+        eulerCache.Remove(goId);
+
+        string prefix = goId.ToString();
+        var keys = new System.Collections.Generic.List<string>(textFieldBuffers.Keys);
+        foreach (var k in keys)
+            if (k.StartsWith(prefix)) textFieldBuffers.Remove(k);
+            var anchorKeys = new System.Collections.Generic.List<string>(sliderAnchors.Keys);
+        foreach (var k in anchorKeys)
+            if (k.StartsWith(prefix)) sliderAnchors.Remove(k);
+    }
+
     public void ClosePanel()
     {
         panelOpen = false;
         activePanelCamIndex = -1;
         ApplyCursorState();
+    }
+
+    void OnDestroy()
+    {
+        if (editMarkerInstance != null) Destroy(editMarkerInstance);
     }
 
 }
